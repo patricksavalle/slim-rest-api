@@ -1,15 +1,5 @@
 <?php
 
-/**
- * TRIPDRIVE.COM
- *
- * @link:       api.tripdrive.com
- * @copyright:  VCK TRAVEL BV, 2016
- * @author:     patrick@patricksavalle.com
- *
- * Note: use coding standards at http://www.php-fig.org/psr/
- */
-
 declare(strict_types = 1);
 
 namespace {
@@ -50,13 +40,34 @@ namespace {
 
 namespace SlimRestApi\Infra {
 
-    require_once BASE_PATH . '/Infra/Ini.php';
-    require_once BASE_PATH . '/Infra/Singleton.php';
+    require_once 'Infra/Ini.php';
+    require_once 'Infra/Singleton.php';
 
     /** @noinspection PhpMultipleClassesDeclarationsInOneFile */
     final class Memcache extends Singleton
     {
         static protected $instance = null;
+
+        final static public function call_user_func_array(callable $function, array $param_arr, int $expiration = 0)
+        {
+            if (!is_callable($function, false, $method_name)) {
+                throw new \Exception("Invalid function call" . print_r($function, true));
+            }
+            // Don't allow anonymous functions
+            assert($method_name != 'Closure::__invoke');
+            // Mangle function signature and try to get from cache
+            $cache_key = hash('md5', $method_name . serialize($param_arr));
+            $result = static::get($cache_key);
+            if ($result === false) {
+                // if not, call the function and cache result
+                $result = call_user_func_array($function, $param_arr);
+                if (static::set($cache_key, $result, $expiration) === false) {
+                    $error_code = static::getResultCode();
+                    error_log("Memcached error ($error_code) on method: $method_name");
+                }
+            }
+            return $result;
+        }
 
         static protected function instance(): \Memcached
         {

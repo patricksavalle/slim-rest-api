@@ -1,15 +1,5 @@
 <?php
 
-/**
- * TRIPDRIVE.COM
- *
- * @link:       api.tripdrive.com
- * @copyright:  VCK TRAVEL BV, 2016
- * @author:     patrick@patricksavalle.com
- *
- * Note: use coding standards at http://www.php-fig.org/psr/
- */
-
 declare(strict_types = 1);
 
 namespace SlimRestApi\Infra;
@@ -29,12 +19,6 @@ class Password
     {
         // on a i7/3Ghz, hasing at factor 12 takes 0.25s per password
         // times increase progressively, 20 will take a minute or so per hash
-        if ($work_factor < 8) {
-            $work_factor = 8;
-        }
-        if ($work_factor > 64) {
-            $work_factor = 64;
-        }
         return password_hash($password, PASSWORD_BCRYPT, ['cost' => $work_factor]);
     }
 

@@ -4,10 +4,8 @@ declare(strict_types = 1);
 
 namespace SlimRestApi;
 
-define("BASE_PATH", dirname(__FILE__));
-
 require 'vendor/autoload.php';
-require BASE_PATH . '/Infra/Ini.php';
+require 'Infra/Ini.php';
 
 use CorsSlim\CorsSlim;
 use Slim\App;
@@ -19,15 +17,6 @@ class SlimRestApi extends App
     public function __construct()
     {
         parent::__construct();
-        $c = $this->getContainer();
-
-        // make sure we have the correct ini-settings
-        ini_set('display_errors', "0");
-        ini_set('assert.active', "1");
-        /** @noinspection PhpUsageOfSilenceOperatorInspection */
-        @ini_set('zend.assertions', "1");
-        ini_set('assert.exception', "0");
-        error_reporting(E_ALL);
 
         // translate php errors into 500-exceptions
         set_error_handler(function ($severity, $message, $file, $line) {
@@ -41,8 +30,57 @@ class SlimRestApi extends App
             throw new \ErrorException($desc, 500, E_ERROR, $file, $line);
         });
 
-        // translate exceptions into 'normal' responses
-        $this->add(new Middleware\ExceptionHandling);
+        // middleware that translates exceptions into 'normal' responses
+        $this->add(function (
+            ServerRequestInterface $request,
+            ResponseInterface $response,
+            callable $next)
+        : ResponseInterface {
+            try {
+                return $next($request, $response);
+            } catch (\Throwable $e) {
+                $status = $e->getCode();
+                if (!is_integer($status) or $status < 100 or $status > 599) {
+                    $status = 500;
+                }
+                if ($status >= 500) {
+                    error_log($e->getMessage() . ' @ ' . $e->getFile() . '(' . $e->getLine() . ')');
+                }
+                return $response->withJson($e->getMessage(), $status);
+            }
+        });
+
+        // make sure we have the correct ini-settings
+        ini_set('display_errors', "0");
+        ini_set('assert.active', "1");
+        /** @noinspection PhpUsageOfSilenceOperatorInspection */
+        @ini_set('zend.assertions', "1");
+        ini_set('assert.exception', "0");
+        error_reporting(E_ALL);
+
+        // listen for cli calls, routes can be CLI-enabled with middleware
+        $this->add(new \pavlakis\cli\CliRequest);
+
+        // add strategy that combines url-, query- and post-parameters into one arg-object
+        $this->getContainer()['foundHandler'] = function () {
+            return new RequestResponseArgsObject;
+        };
+
+        // blank 404 pages
+        $this->getContainer()['notFoundHandler'] = function ($c) {
+            return function ($request, $response) {
+                return $response->withStatus(404);
+            };
+        };
+
+        // blank 405 pages
+        $this->getContainer()['notAllowedHandler'] = function ($c) {
+            return function ($request, $response, $methods) {
+                return $response
+                    ->withStatus(405)
+                    ->withHeader('Allow', implode(', ', $methods));
+            };
+        };
 
         // add cors headers to response
         $getCorsOrigin = function () {
@@ -64,42 +102,5 @@ class SlimRestApi extends App
             "allowHeaders" => Ini::get('cors_allow_headers'),
         ]));
 
-        // add strategy that combines url-, query- and post-parameters into one arg-object
-        $c['foundHandler'] = function () {
-            return new RequestResponseArgsObject;
-        };
-
-        // blank 404 pages
-        $c['notFoundHandler'] = function ($c) {
-            return function ($request, $response) {
-                return $response->withStatus(404);
-            };
-        };
-
-        // blank 405 pages
-        $c['notAllowedHandler'] = function ($c) {
-            return function ($request, $response, $methods) {
-                return $response
-                    ->withStatus(405)
-                    ->withHeader('Allow', implode(', ', $methods));
-            };
-        };
-    }
-
-    protected function showHomePage($rq, $rsp, $args)
-    {
-        echo "<h1>SLIM REST-API</h1>";
-        echo "<strong>Programmed by patrick@patricksavalle.com</strong>";
-        echo "<h2>Methods</h2>";
-        echo "<table>";
-        foreach ($this->router->getRoutes() as $route) {
-            echo "<tr>";
-            foreach ($route->getMethods() as $method) {
-                echo "<td>{$method}</td><td>{$route->getPattern()}</td>";
-            }
-            echo "</tr>";
-        }
-        echo "</table>";
-        return $rsp;
     }
 }

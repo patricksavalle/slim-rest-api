@@ -1,9 +1,0 @@
-# Redirect all to index.php
-RewriteEngine On
-
-# if a directory or a file exists, use it directly
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-RewriteCond %{REQUEST_URI} (/[^.]*|\.)$ [NC]
-RewriteRule .* index.php [L]

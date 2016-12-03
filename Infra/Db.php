@@ -1,24 +1,12 @@
 <?php
 
-/**
- * TRIPDRIVE.COM
- *
- * @link:       api.tripdrive.com
- * @copyright:  VCK TRAVEL BV, 2016
- * @author:     patrick@patricksavalle.com
- *
- * Note: use coding standards at http://www.php-fig.org/psr/
- */
-
 declare(strict_types = 1);
 
 namespace SlimRestApi\Infra;
 
-require_once BASE_PATH . '/Exception/EmptyUpdateException.php';
-require_once BASE_PATH . '/Infra/Ini.php';
-require_once BASE_PATH . '/Infra/Singleton.php';
-
-use SlimRestApi\Exception\EmptyUpdateException;
+require_once 'Exception/EmptyUpdateException.php';
+require_once 'Infra/Ini.php';
+require_once 'Infra/Singleton.php';
 
 /**
  * Class Db, implements some util and config on top of PDO
@@ -103,7 +91,7 @@ class Db extends Singleton
             $fields[] = $k . '=:' . $k;
         }
         if (empty($fields)) {
-            throw new EmptyUpdateException('Empty update');
+            throw new \RangeException('Empty update');
         }
         $fields = implode(',', $fields);
         return static::execute("UPDATE {$table} SET {$fields} WHERE {$primkey}=:{$primkey}", $values);
