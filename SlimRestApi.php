@@ -8,6 +8,7 @@ require_once 'vendor/autoload.php';
 require_once 'Infra/Ini.php';
 
 use CorsSlim\CorsSlim;
+use pavlakis\cli\CliRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
@@ -28,6 +29,7 @@ class SlimRestApi extends App
         });
 
         // translate assert into 500-exceptions
+        /** @noinspection PhpUnusedParameterInspection */
         assert_options(ASSERT_CALLBACK, function ($file, $line, $msg, $desc = null) {
             throw new \ErrorException($desc, 500, E_ERROR, $file, $line);
         });
@@ -61,7 +63,7 @@ class SlimRestApi extends App
         error_reporting(E_ALL);
 
         // listen for cli calls, routes can be CLI-enabled with middleware
-        $this->add(new \pavlakis\cli\CliRequest);
+        $this->add(new CliRequest);
 
         // add strategy that combines url-, query- and post-parameters into one arg-object
         $this->getContainer()['foundHandler'] = function (): callable {
@@ -69,7 +71,9 @@ class SlimRestApi extends App
         };
 
         // blank 404 pages
+        /** @noinspection PhpUnusedParameterInspection */
         $this->getContainer()['notFoundHandler'] = function ($c): callable {
+            /** @noinspection PhpUnusedParameterInspection */
             return function (
                 ServerRequestInterface $request,
                 ResponseInterface $response)
@@ -79,7 +83,9 @@ class SlimRestApi extends App
         };
 
         // blank 405 pages
+        /** @noinspection PhpUnusedParameterInspection */
         $this->getContainer()['notAllowedHandler'] = function ($c): callable {
+            /** @noinspection PhpUnusedParameterInspection */
             return function (
                 ServerRequestInterface $request,
                 ResponseInterface $response,

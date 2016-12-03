@@ -40,8 +40,8 @@ namespace {
 
 namespace SlimRestApi\Infra {
 
-    require_once 'Infra/Ini.php';
-    require_once 'Infra/Singleton.php';
+    require_once 'Ini.php';
+    require_once 'Singleton.php';
 
     /** @noinspection PhpMultipleClassesDeclarationsInOneFile */
     final class Memcache extends Singleton

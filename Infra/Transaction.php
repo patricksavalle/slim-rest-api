@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace SlimRestApi\Infra;
 
-require_once 'Infra/Db.php';
+require_once 'Db.php';
 
 /**
  * Dynamic transaction.

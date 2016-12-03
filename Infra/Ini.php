@@ -6,14 +6,14 @@ namespace SlimRestApi\Infra;
 
 class Ini
 {
-    static protected $ini_values = null;
+    static protected $iniValues = null;
 
     static public function get(string $name)
     {
-        if (null === static::$ini_values) {
+        if (null === static::$iniValues) {
             static::$ini_values = parse_ini_file('slim-rest-api.ini', false, INI_SCANNER_TYPED);
         }
-        return static::$ini_values[$name];
+        return static::$iniValues[$name];
     }
 }
 

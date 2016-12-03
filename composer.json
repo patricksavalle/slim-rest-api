@@ -1,4 +1,14 @@
 {
+  "name": "patman/slim-rest-api",
+  "description": "Production-grade REST-API App-class for PHP SLIM",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Patrick Savalle",
+      "email": "patrick@patricksavalle.com"
+    }
+  ],
   "require": {
     "slim/slim": "^3.0",
     "patricksavalle/slim-request-params": "dev-master",

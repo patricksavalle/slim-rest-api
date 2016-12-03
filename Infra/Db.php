@@ -4,9 +4,8 @@ declare(strict_types = 1);
 
 namespace SlimRestApi\Infra;
 
-require_once 'Exception/EmptyUpdateException.php';
-require_once 'Infra/Ini.php';
-require_once 'Infra/Singleton.php';
+require_once 'Ini.php';
+require_once 'Singleton.php';
 
 /**
  * Class Db, implements some util and config on top of PDO
@@ -108,7 +107,7 @@ class Db extends Singleton
             $fields[] = $k . '=:' . $k;
         }
         if (empty($fields)) {
-            throw new EmptyUpdateException('Empty insert');
+            throw new \InvalidArgumentException('Empty insert');
         }
         $fields = implode(',', $fields);
         $placeholders = implode(',', array_keys($values));
