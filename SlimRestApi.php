@@ -4,10 +4,12 @@ declare(strict_types = 1);
 
 namespace SlimRestApi;
 
-require 'vendor/autoload.php';
-require 'Infra/Ini.php';
+require_once 'vendor/autoload.php';
+require_once 'Infra/Ini.php';
 
 use CorsSlim\CorsSlim;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
 use SlimRequestParams\RequestResponseArgsObject;
 use SlimRestApi\Infra\Ini;
@@ -62,20 +64,27 @@ class SlimRestApi extends App
         $this->add(new \pavlakis\cli\CliRequest);
 
         // add strategy that combines url-, query- and post-parameters into one arg-object
-        $this->getContainer()['foundHandler'] = function () {
+        $this->getContainer()['foundHandler'] = function (): callable {
             return new RequestResponseArgsObject;
         };
 
         // blank 404 pages
-        $this->getContainer()['notFoundHandler'] = function ($c) {
-            return function ($request, $response) {
+        $this->getContainer()['notFoundHandler'] = function ($c): callable {
+            return function (
+                ServerRequestInterface $request,
+                ResponseInterface $response)
+            : ResponseInterface {
                 return $response->withStatus(404);
             };
         };
 
         // blank 405 pages
-        $this->getContainer()['notAllowedHandler'] = function ($c) {
-            return function ($request, $response, $methods) {
+        $this->getContainer()['notAllowedHandler'] = function ($c): callable {
+            return function (
+                ServerRequestInterface $request,
+                ResponseInterface $response,
+                array $methods)
+            : ResponseInterface {
                 return $response
                     ->withStatus(405)
                     ->withHeader('Allow', implode(', ', $methods));
@@ -83,7 +92,7 @@ class SlimRestApi extends App
         };
 
         // add cors headers to response
-        $getCorsOrigin = function () {
+        $get_cors_origin = function (): array {
             $origin = [];
             if (array_key_exists('HTTP_ORIGIN', $_SERVER)
                 and in_array(strtolower($_SERVER["HTTP_ORIGIN"]), Ini::get('cors_origin'))
@@ -93,7 +102,7 @@ class SlimRestApi extends App
             return $origin;
         };
         $this->add(new CorsSlim([
-            "origin" => $getCorsOrigin(),
+            "origin" => $get_cors_origin(),
             "exposeHeaders" => Ini::get('cors_expose_headers'),
             "maxAge" => Ini::get('cors_max_age'),
             // 1 or "TRUE" from the ini file are both not working as values for allowCredentials
