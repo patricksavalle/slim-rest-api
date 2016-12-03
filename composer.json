@@ -15,5 +15,10 @@
     "phpunit/phpunit": "5.3.*",
     "palanik/corsslim": "dev-slim3",
     "pavlakis/slim-cli": "^1.0"
-  }
+  },
+  "autoload": {
+    "psr-4": {
+      "SlimRestApi\\": "SlimRestApi"
+    }
+  },
 }
