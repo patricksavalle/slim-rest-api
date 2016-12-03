@@ -11,7 +11,7 @@ class Ini
     static public function get(string $name)
     {
         if (null === static::$iniValues) {
-            static::$ini_values = parse_ini_file('slim-rest-api.ini', false, INI_SCANNER_TYPED);
+            static::$iniValues = parse_ini_file('slim-rest-api.ini', false, INI_SCANNER_TYPED);
         }
         return static::$iniValues[$name];
     }
