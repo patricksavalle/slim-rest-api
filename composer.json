@@ -1,5 +1,5 @@
 {
-  "name": "patman/slim-rest-api",
+  "name": "patricksavalle/slim-rest-api",
   "description": "Production-grade REST-API App-class for PHP SLIM",
   "type": "library",
   "license": "MIT",
