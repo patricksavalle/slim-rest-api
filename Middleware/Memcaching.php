@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace SlimRestApi\Middleware;
 
-require_once '../Infra/Memcache.php';
-
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SlimRestApi\Infra\Memcache;

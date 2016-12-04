@@ -4,9 +4,6 @@ declare(strict_types = 1);
 
 namespace SlimRestApi\Infra;
 
-require_once 'Ini.php';
-require_once 'Singleton.php';
-
 /**
  * Class Db, implements some util and config on top of PDO
  * This class allows for very simpel syntax:

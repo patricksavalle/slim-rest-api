@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace SlimRestApi;
 
 require_once 'vendor/autoload.php';
-require_once 'Infra/Ini.php';
 
 use CorsSlim\CorsSlim;
 use pavlakis\cli\CliRequest;
