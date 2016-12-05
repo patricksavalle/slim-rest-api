@@ -16,7 +16,7 @@ Very simple to use, just use the SlimRestApi-class instead of the standard Slim 
 Example:
 
     <?php
-
+    
     declare(strict_types = 1);
     
     namespace YourApi;
@@ -31,20 +31,22 @@ Example:
     use SlimRestApi\Middleware\Memcaching;
     use SlimRestApi\Middleware\ReadOnly;
     use SlimRestApi\SlimRestApi;
-
+    use Psr\Http\Message\ResponseInterface;
+    use Psr\Http\Message\ServerRequestInterface;
+    
     class YourApi extends SlimRestApi
     {
         public function __construct()
         {
             parent::__construct();
-   
-           $this->get("/echo", function (
-                ServerRequestInterface $request, 
-                ResponseInterface $response, 
-                \stdClass $args) 
-                : ResponseInterface 
+    
+            $this->get("/echo", function (
+                ServerRequestInterface $request,
+                ResponseInterface $response,
+                \stdClass $args)
+            : ResponseInterface
             {
-                return $rsp->withJson(QueryParameters::getValidatedParams());
+                return $response->withJson(QueryParameters::get());
             })
                 ->add(new QueryParameters([
                     '{string:.{30}},the lazy fox',
@@ -53,10 +55,12 @@ Example:
                     '{int:\int},1',
                     '{bool:\bool},true',]))
                 ->add(new ReadOnly);
-            }
+        }
     }
     
     (new YourApi)->run();
+
+Start the SLIM server and open this URL: http://localhost:8000/echo (See what happens)
 
 ### Setup
 
