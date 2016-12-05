@@ -38,11 +38,6 @@ Example:
         {
             parent::__construct();
    
-            // show the API homepage
-            $this->get("/", array[$this, "showHomePage"])
-                ->add( new Memcache )
-                ->add( new ReadOnly );
-                
            $this->get("/echo", function (
                 ServerRequestInterface $request, 
                 ResponseInterface $response, 

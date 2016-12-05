@@ -121,26 +121,4 @@ class SlimRestApi extends App
     {
         return in_array(strtolower($origin), Ini::get('cors_origin'));
     }
-
-    // enumerate all methods this server supports
-    static protected function showHomepage(
-        SlimRestApi $api,
-        ServerRequestInterface $request,
-        ResponseInterface $response,
-        \stdClass $args)
-    : ResponseInterface
-    {
-        echo "<h1>SLIM JSON REST-API</h1>";
-        echo "<h2>Methods</h2>";
-        echo "<table>";
-        foreach ($api->router->getRoutes() as $route) {
-            echo "<tr>";
-            foreach ($route->getMethods() as $method) {
-                echo "<td>{$method}</td><td>{$route->getPattern()}</td>";
-            }
-            echo "</tr>";
-        }
-        echo "</table>";
-        return $rsp;
-    }
 }
