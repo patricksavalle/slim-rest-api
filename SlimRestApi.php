@@ -123,17 +123,17 @@ class SlimRestApi extends App
     }
 
     // enumerate all methods this server supports
-    protected function showHomepage(
+    static protected function showHomepage(
+        SlimRestApi $api,
         ServerRequestInterface $request,
         ResponseInterface $response,
         \stdClass $args)
     : ResponseInterface
     {
         echo "<h1>SLIM JSON REST-API</h1>";
-        echo "<strong>" . get_called_class() . "</strong>";
         echo "<h2>Methods</h2>";
         echo "<table>";
-        foreach ($this->router->getRoutes() as $route) {
+        foreach ($api->router->getRoutes() as $route) {
             echo "<tr>";
             foreach ($route->getMethods() as $method) {
                 echo "<td>{$method}</td><td>{$route->getPattern()}</td>";
