@@ -56,7 +56,7 @@ Example:
             }
     }
     
-    (new YourApp)->run();
+    (new YourApi)->run();
 
 ### Setup
 
@@ -67,8 +67,9 @@ Example:
 
 
         {
-          "require": {
-            "patricksavalle/slim-request-params": "dev-master"
+          "require": 
+          {
+            "patricksavalle/slim-rest-api": "dev-master"
           }
         }
 
