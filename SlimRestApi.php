@@ -61,7 +61,7 @@ class SlimRestApi extends App
         ini_set('assert.exception', "0");
         error_reporting(E_ALL);
 
-        // listen for cli calls, routes can be CLI-enabled with middleware
+        // listen for cli calls, routes can be made CLI-only with CliRequest-middleware
         $this->add(new CliRequest);
 
         // add strategy that combines url-, query- and post-parameters into one arg-object
@@ -99,9 +99,8 @@ class SlimRestApi extends App
         // add cors headers to response
         $get_cors_origin = function (): array {
             $origin = [];
-            if (array_key_exists('HTTP_ORIGIN', $_SERVER)
-                and in_array(strtolower($_SERVER["HTTP_ORIGIN"]), Ini::get('cors_origin'))
-            ) {
+            // IE hack
+            if (isset($_SERVER["HTTP_ORIGIN"]) and $this->isAllowedCorsOrigin($_SERVER["HTTP_ORIGIN"])) {
                 $origin[] = $_SERVER["HTTP_ORIGIN"];
             }
             return $origin;
@@ -115,6 +114,33 @@ class SlimRestApi extends App
             "allowMethods" => Ini::get('cors_allow_methods'),
             "allowHeaders" => Ini::get('cors_allow_headers'),
         ]));
+    }
 
+    // override in derived class to do extensive origin checks
+    protected function isAllowedCorsOrigin(string $origin): bool
+    {
+        return in_array(strtolower($origin), Ini::get('cors_origin'));
+    }
+
+    // enumerate all methods this server supports
+    protected function showHomepage(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        \stdClass $args)
+    : ResponseInterface
+    {
+        echo "<h1>SLIM JSON REST-API</h1>";
+        echo "<strong>" . get_called_class() . "</strong>";
+        echo "<h2>Methods</h2>";
+        echo "<table>";
+        foreach ($this->router->getRoutes() as $route) {
+            echo "<tr>";
+            foreach ($route->getMethods() as $method) {
+                echo "<td>{$method}</td><td>{$route->getPattern()}</td>";
+            }
+            echo "</tr>";
+        }
+        echo "</table>";
+        return $rsp;
     }
 }
