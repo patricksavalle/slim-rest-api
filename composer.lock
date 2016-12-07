@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "66f84964681355dc283fa060da3efed5",
-    "content-hash": "0db54bbcc053b1b5fc6f43b4a042f6b6",
+    "hash": "c9545aa0e15a9092664aa52ce59a6631",
+    "content-hash": "fa139bef680bbdd521fe48d5aa882e10",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -226,12 +226,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/patricksavalle/slim-request-params.git",
-                "reference": "602adca1b30de0e355e929400dc89df15f279cb0"
+                "reference": "974d1a71490c4b58a8f10f0ab7811ccc074e5746"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/patricksavalle/slim-request-params/zipball/602adca1b30de0e355e929400dc89df15f279cb0",
-                "reference": "602adca1b30de0e355e929400dc89df15f279cb0",
+                "url": "https://api.github.com/repos/patricksavalle/slim-request-params/zipball/974d1a71490c4b58a8f10f0ab7811ccc074e5746",
+                "reference": "974d1a71490c4b58a8f10f0ab7811ccc074e5746",
                 "shasum": ""
             },
             "require": {
@@ -266,7 +266,7 @@
                 "slim",
                 "validation"
             ],
-            "time": "2016-12-02 20:05:43"
+            "time": "2016-12-05 15:43:06"
         },
         {
             "name": "pavlakis/slim-cli",
