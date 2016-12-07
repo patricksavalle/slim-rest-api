@@ -226,12 +226,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/patricksavalle/slim-request-params.git",
-                "reference": "974d1a71490c4b58a8f10f0ab7811ccc074e5746"
+                "reference": "76f4601038fc3d3fcf5cbdafb60b3d4d85376377"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/patricksavalle/slim-request-params/zipball/974d1a71490c4b58a8f10f0ab7811ccc074e5746",
-                "reference": "974d1a71490c4b58a8f10f0ab7811ccc074e5746",
+                "url": "https://api.github.com/repos/patricksavalle/slim-request-params/zipball/76f4601038fc3d3fcf5cbdafb60b3d4d85376377",
+                "reference": "76f4601038fc3d3fcf5cbdafb60b3d4d85376377",
                 "shasum": ""
             },
             "require": {
@@ -266,7 +266,7 @@
                 "slim",
                 "validation"
             ],
-            "time": "2016-12-05 15:43:06"
+            "time": "2016-12-07 16:48:31"
         },
         {
             "name": "pavlakis/slim-cli",
