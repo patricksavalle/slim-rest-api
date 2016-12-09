@@ -13,7 +13,7 @@ Turns the default SLIM App-class into a production-grade JSON REST-API base-clas
 
 Very simple to use, just use the SlimRestApi-class instead of the standard Slim App-class.
 
-Example:
+Example _**`index.php`**_:
 
     <?php
     
@@ -38,8 +38,10 @@ Example:
     {
         public function __construct()
         {
+            // call parent ctor before anything else!
             parent::__construct();
     
+            // Add a route
             $this->get("/echo", function (
                 ServerRequestInterface $request,
                 ResponseInterface $response,
@@ -57,18 +59,25 @@ Example:
                 ->add(new ReadOnly);
         }
     }
-    
+
+    // instantiate and run
     (new YourApi)->run();
 
-Start the SLIM server and open this URL: http://localhost:8000/echo (See what happens)
+Start the PHP server:
+
+    php -S localhost:8000
+
+Open this URL's in your browser (see what happens):
+
+    http://localhost:8000/echo 
+    http://localhost:8000/echo?mandatory_int=1
+    http://localhost:8000/echo?mandatory_int=1&bool=false
 
 ### Setup
 
 - Install with Composer
-
-- Update your composer.json to require patricksavalle/slim-request-params.
-- Run composer install to add slim-request-params your vendor folder.
-
+- Update your composer.json to require patricksavalle/slim-rest-api.
+- Run composer install to add slim-rest-api your vendor folder.
 
         {
           "require": 
@@ -79,13 +88,14 @@ Start the SLIM server and open this URL: http://localhost:8000/echo (See what ha
 
 - Include in your source.
 
-
         <?php
         require './vendor/autoload.php';
 
-- Copy the `slim-rest-api.ini` file to the project-root and edit 
+- Copy the `slim-rest-api.ini` file to the project-root and edit (put in your settings)
 
 ### Available Middleware
+
+This packages comes with a minimum of (optional) helpers and middleware.
 
 #### Validate parameters of a route
 
@@ -96,7 +106,7 @@ See: https://github.com/patricksavalle/slim-request-params
     
 #### Set route to read-only
     
-Sets that route to read-only, optimising the database engine, adding a layer of robustness by preventing mistakenly update the database.
+Sets route to read-only, optimising the database engine, adding a layer of robustness by preventing unwanted updates to the database.
 
     use SlimRestApi\Middleware\ReadOnly;
     $YourApp->get(...)->add( new ReadOnly );
@@ -104,13 +114,15 @@ Sets that route to read-only, optimising the database engine, adding a layer of 
 #### Set route to CLI / command-line only
 
 Very usefull for functions that should not be exposed over HTTP (such as cronjob callbacks or configuration methods).
+For examples see: https://github.com/pavlakis/slim-cli
   
     use SlimRestApi\Middleware\CliRequest;
     $YourApp->get(...)->add( new CliRequest );
+
   
 #### Add response of a route to memcache
   
-So the webserver (Apache, NGINX, etc.) can first check memcache before activating the API. Uses the methods URL (path- and query-part) as key.
+So the webserver (Apache, NGINX, etc.) can first check memcache before activating the API. Uses the methods URL (path- and query-part) as key. You need to setup memcache and Apache accordingly.
     
     use SlimRestApi\Middleware\Memcaching;
     $YourApp->get(...)->add( new Memcaching );
