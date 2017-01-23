@@ -56,13 +56,13 @@ class Db extends Singleton
     static public function date(string $datetime, string $timezone = 'UTC'): string
     {
         // there are some timezone bugs in PHP, just translate
-        switch ($timezone) {
-            case 'Asia/Yangon' :
-                error_log("Asia/Yangon converted to MMT, check if newest PHP already implements this timezone");
-                $timezone = 'MMT'; // Myanmar Time
-                // bug report: https://bugs.php.net/bug.php?id=73467
-                break;
-        }
+//        switch ($timezone) {
+//            case 'Asia/Yangon' :
+//                error_log("Asia/Yangon converted to MMT, check if newest PHP already implements this timezone");
+//                $timezone = 'MMT'; // Myanmar Time
+//                // bug report: https://bugs.php.net/bug.php?id=73467
+//                break;
+//        }
         // normalise date to UTC and MySQL-format
         return (new \DateTime($datetime, new \DateTimeZone($timezone)))
             ->setTimezone(new \DateTimeZone('UTC'))
