@@ -3,11 +3,11 @@
 _Uses PHP 7.x syntax_
 
 Turns the default SLIM App-class into a production-grade JSON REST-API base-class:
-- adds (query and body) parameter validation for added security and self-documentation
-- adds robust exception and assert handling / sets-up the PHP interpreter for exceptions so 'normal' errors will trhow exceptions that you can catch.
+- adds (GET, POST and header) parameter validation for added security and self-documentation
+- adds robust exception and assert handling / sets-up the PHP interpreter for exceptions so 'normal' errors will throw exceptions that you can catch.
 - translates unhandled exceptions into 'normal' JSON-responses with the correct HTTP-STATUS
-- translates unknown routes/URL's and methods into 'normal' 403 and 404 JSON-responses)
-- CLI support to accept for instance cronjob calls from the server
+- translates unknown routes/URL's and methods into 'normal' 403 and 404 JSON-responses
+- CLI support to accept and protect for instance cronjob calls from the server
 - CORS / cross-origin resource sharing support
 - Middleware for database optimisation and memcache support
 
