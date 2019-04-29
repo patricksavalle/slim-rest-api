@@ -13,6 +13,8 @@ Turns the default SLIM App-class into a production-grade JSON REST-API base-clas
 
 Very simple to use, just use the SlimRestApi-class instead of the standard Slim App-class.
 
+Edit the _**`slim-rest-api.ini`**_ for correct (database) configuration. 
+
 Example _**`index.php`**_:
 
     <?php
