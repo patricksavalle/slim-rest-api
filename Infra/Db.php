@@ -113,9 +113,10 @@ class Db extends Singleton
 
     static protected function instance(): \PDO
     {
-        $host = Ini::get('database_host');
+        $dbhost = Ini::get('database_host');
         $dbname = Ini::get('database_name');
-        $pdo = new \PDO("mysql:host={$host};dbname={$dbname}", Ini::get('database_user'), Ini::get('database_password'));
+        $dbcharset = Ini::get('database_charset');
+        $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname};charset={$dbcharset}", Ini::get('database_user'), Ini::get('database_password'));
         $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false); // otherwise binding int-parameters will fail
         $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
