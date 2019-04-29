@@ -12,7 +12,6 @@
   "require": {
     "slim/slim": "^3.0",
     "patricksavalle/slim-request-params": "dev-master",
-    "phpunit/phpunit": "5.3.*",
     "palanik/corsslim": "dev-slim3",
     "pavlakis/slim-cli": "^1.0"
   },
