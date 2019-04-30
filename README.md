@@ -84,7 +84,7 @@ Open this URL's in your browser (see what happens):
         {
           "require": 
           {
-            "patricksavalle/slim-rest-api": "dev-master"
+            "patricksavalle/slim-rest-api": "^1.0"
           }
         }
 
