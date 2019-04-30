@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f14d655b0a5d80e25c79bbbd4e8fde63",
-    "content-hash": "b321deaddd3dcb0aa371155f6452d0c4",
+    "hash": "3aa157149c74fddfd69f0e51603332ed",
+    "content-hash": "49126c625a075e2ea3c71d9494f081e0",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -133,16 +133,16 @@
         },
         {
             "name": "patricksavalle/slim-request-params",
-            "version": "dev-master",
+            "version": "v1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/patricksavalle/slim-request-params.git",
-                "reference": "35aedcb316e51c0d0cc0f0fe6b2a506a4e3c8bc0"
+                "reference": "7bfc569fe72592cb41977579efd782066fe49a5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/patricksavalle/slim-request-params/zipball/35aedcb316e51c0d0cc0f0fe6b2a506a4e3c8bc0",
-                "reference": "35aedcb316e51c0d0cc0f0fe6b2a506a4e3c8bc0",
+                "url": "https://api.github.com/repos/patricksavalle/slim-request-params/zipball/7bfc569fe72592cb41977579efd782066fe49a5d",
+                "reference": "7bfc569fe72592cb41977579efd782066fe49a5d",
                 "shasum": ""
             },
             "require": {
@@ -177,7 +177,7 @@
                 "slim",
                 "validation"
             ],
-            "time": "2017-04-19 11:21:24"
+            "time": "2016-12-08 11:07:12"
         },
         {
             "name": "pavlakis/slim-cli",
@@ -452,7 +452,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "patricksavalle/slim-request-params": 20,
         "palanik/corsslim": 20
     },
     "prefer-stable": false,

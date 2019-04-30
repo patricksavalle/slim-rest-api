@@ -15,6 +15,7 @@
   "version" : "v1.0",
   "type": "library",
   "license": "MIT",
+  "homepage": "https://github.com/patricksavalle/slim-rest-api",
   "authors": [
     {
       "name": "Patrick Savalle",
