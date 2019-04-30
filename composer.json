@@ -1,6 +1,7 @@
 {
   "name": "patricksavalle/slim-rest-api",
   "description": "Production-grade REST-API App-class for PHP SLIM",
+  "version" : "v1.0",
   "type": "library",
   "license": "MIT",
   "authors": [
