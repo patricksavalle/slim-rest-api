@@ -13,6 +13,8 @@ Turns the default SLIM App-class into a production-grade JSON REST-API base-clas
 
 Very simple to use, just use the SlimRestApi-class instead of the standard Slim App-class.
 
+Edit the _**`slim-rest-api.ini`**_ for correct (database) configuration. 
+
 Example _**`index.php`**_:
 
     <?php
@@ -155,4 +157,12 @@ Provides a memcached version of call_user_func_array(). Use only for true functi
     use SlimRestApi/Memcache;
     $value = Memcache::call_user_func_array(...);
      
+### Contributing
+
+Fork it.
+
+- Create your feature branch (git checkout -b my-new-feature).
+- Commit your changes (git commit -am 'Added some feature').
+- Push to the branch (git push origin my-new-feature).
+- Create a new Pull Request.
 
