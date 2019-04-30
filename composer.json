@@ -1,6 +1,17 @@
 {
   "name": "patricksavalle/slim-rest-api",
   "description": "Production-grade REST-API App-class for PHP SLIM",
+  "keywords": [
+    "php",
+    "api",
+    "rest",
+    "slim",
+    "restful",
+    "framework",
+    "error handling",
+    "exception handling",
+    "CORS"
+  ],
   "version" : "v1.0",
   "type": "library",
   "license": "MIT",
@@ -12,7 +23,7 @@
   ],
   "require": {
     "slim/slim": "^3.0",
-    "patricksavalle/slim-request-params": "dev-master",
+    "patricksavalle/slim-request-params": "*",
     "palanik/corsslim": "dev-slim3",
     "pavlakis/slim-cli": "^1.0"
   },
