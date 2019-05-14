@@ -113,6 +113,14 @@ Sets route to read-only, optimising the database engine, adding a layer of robus
     use SlimRestApi\Middleware\ReadOnly;
     $YourApp->get(...)->add( new ReadOnly );
     
+If you use other middleware (e.g. authentication) that needs write-access, chain them AFTER this method, like so
+
+    use SlimRestApi\Middleware\ReadOnly;
+    $YourApp->get(...)
+        ->add( new ReadOnly )
+        ->add( new Authentication )
+        -> ...
+    
 #### Set route to CLI / command-line only
 
 Very usefull for functions that should not be exposed over HTTP (such as cronjob callbacks or configuration methods).
@@ -143,6 +151,10 @@ Makes database access as simple as possible. Automatically handles prepared-stat
         return $obj;
     });
     
+All PDO-statements are accessible through the Db-singleton (magic method). To prevent warnings use:
+
+    /** @noinspection PhpUndefinedMethodInspection */
+
 #### INI-file / configuration
 
 Makes INI's as simple as possible. Looks for a 'slim-rest-api.ini' file in the webroot, see project for axeample.
