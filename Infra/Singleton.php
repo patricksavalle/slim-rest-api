@@ -1,18 +1,23 @@
-<?php
+<?php /** @noinspection PhpUnused */
+/** @noinspection PhpUnhandledExceptionInspection */
 
 declare(strict_types = 1);
 
 namespace SlimRestApi\Infra;
 
-abstract class Singleton extends \stdClass
+use ErrorException;
+use Exception;
+use stdClass;
+
+abstract class Singleton extends stdClass
 {
     static final public function __callStatic(string $method, array $arguments)
     {
         try {
             return call_user_func_array([self::instantiate(), $method], $arguments);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $trace = (object)$e->getTrace()[3];
-            throw new \ErrorException($e->getMessage(), 500, E_ERROR, $trace->file, $trace->line);
+            throw new ErrorException($e->getMessage(), 500, E_ERROR, $trace->file, $trace->line);
         }
     }
 

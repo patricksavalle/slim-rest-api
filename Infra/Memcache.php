@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpUndefinedMethodInspection */
+/** @noinspection PhpUnhandledExceptionInspection */
 
 declare(strict_types = 1);
 
@@ -29,6 +30,7 @@ namespace {
                 return true;
             }
 
+            /** @noinspection PhpUnused */
             public function getResultCode()
             {
                 return 1;
@@ -40,6 +42,9 @@ namespace {
 
 namespace SlimRestApi\Infra {
 
+    use Exception;
+    use Memcached;
+
     /** @noinspection PhpMultipleClassesDeclarationsInOneFile */
     final class Memcache extends Singleton
     {
@@ -48,7 +53,7 @@ namespace SlimRestApi\Infra {
         final static public function call_user_func_array(callable $function, array $param_arr, int $expiration = 0)
         {
             if (!is_callable($function, false, $method_name)) {
-                throw new \Exception("Invalid function call" . print_r($function, true));
+                throw new Exception("Invalid function call" . print_r($function, true));
             }
             // Don't allow anonymous functions
             assert($method_name != 'Closure::__invoke');
@@ -66,9 +71,9 @@ namespace SlimRestApi\Infra {
             return $result;
         }
 
-        static protected function instance(): \Memcached
+        static protected function instance(): Memcached
         {
-            $mc = new \Memcached();
+            $mc = new Memcached();
             $mc->addServer(Ini::get('memcache_host'), Ini::get('memcache_port'));
             return $mc;
         }

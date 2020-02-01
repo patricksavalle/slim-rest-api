@@ -1,43 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "3aa157149c74fddfd69f0e51603332ed",
     "content-hash": "49126c625a075e2ea3c71d9494f081e0",
     "packages": [
-        {
-            "name": "container-interop/container-interop",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/container-interop/container-interop.git",
-                "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/container-interop/container-interop/zipball/79cbf1341c22ec75643d841642dd5d6acd83bdb8",
-                "reference": "79cbf1341c22ec75643d841642dd5d6acd83bdb8",
-                "shasum": ""
-            },
-            "require": {
-                "psr/container": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Interop\\Container\\": "src/Interop/Container/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
-            "homepage": "https://github.com/container-interop/container-interop",
-            "time": "2017-02-14 19:40:03"
-        },
         {
             "name": "nikic/fast-route",
             "version": "v1.3.0",
@@ -82,7 +50,7 @@
                 "router",
                 "routing"
             ],
-            "time": "2018-02-13 20:26:39"
+            "time": "2018-02-13T20:26:39+00:00"
         },
         {
             "name": "palanik/corsslim",
@@ -129,23 +97,24 @@
                 "slim",
                 "slimphp"
             ],
-            "time": "2016-01-15 04:37:35"
+            "time": "2016-01-15T04:37:35+00:00"
         },
         {
             "name": "patricksavalle/slim-request-params",
-            "version": "v1.0",
+            "version": "v1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/patricksavalle/slim-request-params.git",
-                "reference": "7bfc569fe72592cb41977579efd782066fe49a5d"
+                "reference": "26958f62cf656348d9c3730e235007ddc5e601b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/patricksavalle/slim-request-params/zipball/7bfc569fe72592cb41977579efd782066fe49a5d",
-                "reference": "7bfc569fe72592cb41977579efd782066fe49a5d",
+                "url": "https://api.github.com/repos/patricksavalle/slim-request-params/zipball/26958f62cf656348d9c3730e235007ddc5e601b6",
+                "reference": "26958f62cf656348d9c3730e235007ddc5e601b6",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
                 "slim/slim": "^3.0"
             },
             "type": "library",
@@ -167,7 +136,7 @@
                 }
             ],
             "description": "Adds request-parameter validation to the SLIM 3.x PHP framework",
-            "homepage": "https://github.com/patricksavalle/SlimRequestParams",
+            "homepage": "https://github.com/patricksavalle/slim-request-params",
             "keywords": [
                 "arguments",
                 "parameters",
@@ -177,26 +146,27 @@
                 "slim",
                 "validation"
             ],
-            "time": "2016-12-08 11:07:12"
+            "time": "2020-02-01T09:28:01+00:00"
         },
         {
             "name": "pavlakis/slim-cli",
-            "version": "1.1",
+            "version": "1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pavlakis/slim-cli.git",
-                "reference": "6598a023d26bb2d10313dc7edfb9709f8653c0ac"
+                "reference": "5232adc0f17ffd33602e1cadaa0b1fa6920086af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pavlakis/slim-cli/zipball/6598a023d26bb2d10313dc7edfb9709f8653c0ac",
-                "reference": "6598a023d26bb2d10313dc7edfb9709f8653c0ac",
+                "url": "https://api.github.com/repos/pavlakis/slim-cli/zipball/5232adc0f17ffd33602e1cadaa0b1fa6920086af",
+                "reference": "5232adc0f17ffd33602e1cadaa0b1fa6920086af",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.0"
             },
             "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.2",
                 "phpunit/phpunit": "^4.0",
                 "slim/slim": "^3.0"
             },
@@ -225,7 +195,7 @@
                 "middleware",
                 "slim"
             ],
-            "time": "2018-10-22 22:32:15"
+            "time": "2019-10-23T21:50:55+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -275,7 +245,7 @@
                 "container",
                 "dependency injection"
             ],
-            "time": "2018-01-21 07:42:36"
+            "time": "2018-01-21T07:42:36+00:00"
         },
         {
             "name": "psr/container",
@@ -324,7 +294,7 @@
                 "container-interop",
                 "psr"
             ],
-            "time": "2017-02-14 16:28:37"
+            "time": "2017-02-14T16:28:37+00:00"
         },
         {
             "name": "psr/http-message",
@@ -374,24 +344,26 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06 14:39:51"
+            "time": "2016-08-06T14:39:51+00:00"
         },
         {
             "name": "slim/slim",
-            "version": "3.12.1",
+            "version": "3.12.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "eaee12ef8d0750db62b8c548016d82fb33addb6b"
+                "reference": "1c9318a84ffb890900901136d620b4f03a59da38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/eaee12ef8d0750db62b8c548016d82fb33addb6b",
-                "reference": "eaee12ef8d0750db62b8c548016d82fb33addb6b",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/1c9318a84ffb890900901136d620b4f03a59da38",
+                "reference": "1c9318a84ffb890900901136d620b4f03a59da38",
                 "shasum": ""
             },
             "require": {
-                "container-interop/container-interop": "^1.2",
+                "ext-json": "*",
+                "ext-libxml": "*",
+                "ext-simplexml": "*",
                 "nikic/fast-route": "^1.0",
                 "php": ">=5.5.0",
                 "pimple/pimple": "^3.0",
@@ -417,24 +389,24 @@
             ],
             "authors": [
                 {
-                    "name": "Rob Allen",
-                    "email": "rob@akrabat.com",
-                    "homepage": "http://akrabat.com"
-                },
-                {
                     "name": "Josh Lockhart",
                     "email": "hello@joshlockhart.com",
                     "homepage": "https://joshlockhart.com"
                 },
                 {
-                    "name": "Gabriel Manricks",
-                    "email": "gmanricks@me.com",
-                    "homepage": "http://gabrielmanricks.com"
-                },
-                {
                     "name": "Andrew Smith",
                     "email": "a.smith@silentworks.co.uk",
                     "homepage": "http://silentworks.co.uk"
+                },
+                {
+                    "name": "Rob Allen",
+                    "email": "rob@akrabat.com",
+                    "homepage": "http://akrabat.com"
+                },
+                {
+                    "name": "Gabriel Manricks",
+                    "email": "gmanricks@me.com",
+                    "homepage": "http://gabrielmanricks.com"
                 }
             ],
             "description": "Slim is a PHP micro framework that helps you quickly write simple yet powerful web applications and APIs",
@@ -445,7 +417,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2019-04-16 16:47:29"
+            "time": "2019-11-28T17:40:33+00:00"
         }
     ],
     "packages-dev": [],

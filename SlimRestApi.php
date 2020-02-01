@@ -7,15 +7,18 @@ namespace SlimRestApi;
 require_once 'vendor/autoload.php';
 
 use CorsSlim\CorsSlim;
+use ErrorException;
 use pavlakis\cli\CliRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
 use SlimRequestParams\RequestResponseArgsObject;
 use SlimRestApi\Infra\Ini;
+use Throwable;
 
 class SlimRestApi extends App
 {
+    /** @noinspection PhpUnusedParameterInspection */
     public function __construct()
     {
         parent::__construct();
@@ -23,14 +26,13 @@ class SlimRestApi extends App
         // translate php errors into 500-exceptions
         set_error_handler(function ($severity, $message, $file, $line) {
             if (error_reporting() & $severity) {
-                throw new \ErrorException($message, 500, $severity, $file, $line);
+                throw new ErrorException($message, 500, $severity, $file, $line);
             }
         });
 
         // translate assert into 500-exceptions
-        /** @noinspection PhpUnusedParameterInspection */
         assert_options(ASSERT_CALLBACK, function ($file, $line, $msg, $desc = null) {
-            throw new \ErrorException($desc, 500, E_ERROR, $file, $line);
+            throw new ErrorException($desc, 500, E_ERROR, $file, $line);
         });
 
         // middleware that translates exceptions into 'normal' responses
@@ -41,7 +43,7 @@ class SlimRestApi extends App
         : ResponseInterface {
             try {
                 return $next($request, $response);
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 $status = $e->getCode();
                 if (!is_integer($status) or $status < 100 or $status > 599) {
                     $status = 500;
@@ -70,9 +72,7 @@ class SlimRestApi extends App
         };
 
         // blank 404 pages
-        /** @noinspection PhpUnusedParameterInspection */
         $this->getContainer()['notFoundHandler'] = function ($c): callable {
-            /** @noinspection PhpUnusedParameterInspection */
             return function (
                 ServerRequestInterface $request,
                 ResponseInterface $response)
@@ -82,9 +82,7 @@ class SlimRestApi extends App
         };
 
         // blank 405 pages
-        /** @noinspection PhpUnusedParameterInspection */
         $this->getContainer()['notAllowedHandler'] = function ($c): callable {
-            /** @noinspection PhpUnusedParameterInspection */
             return function (
                 ServerRequestInterface $request,
                 ResponseInterface $response,

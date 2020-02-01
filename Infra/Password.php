@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnused */
 
 declare(strict_types = 1);
 
@@ -14,6 +14,9 @@ class Password
 
     /**
      * Creates the password hash we store in the database
+     * @param string $password
+     * @param int $work_factor
+     * @return string
      */
     public static function hash(string $password, int $work_factor = 12): string
     {
@@ -24,6 +27,9 @@ class Password
 
     /**
      * Checks the user supplied password against the hash we stored
+     * @param string $password
+     * @param string $stored_hash
+     * @return bool
      */
     public static function check(string $password, string $stored_hash): bool
     {

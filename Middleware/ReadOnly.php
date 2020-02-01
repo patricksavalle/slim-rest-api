@@ -10,6 +10,7 @@ use SlimRestApi\Infra\Db;
 
 class ReadOnly
 {
+    /** @noinspection PhpUndefinedMethodInspection */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
         Db::exec("SET SESSION TRANSACTION READ ONLY");

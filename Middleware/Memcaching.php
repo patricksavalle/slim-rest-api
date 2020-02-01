@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnused */
 
 declare(strict_types = 1);
 
@@ -17,6 +17,7 @@ class Memcaching
         $this->expiration = $expiration;
     }
 
+    /** @noinspection PhpUndefinedMethodInspection */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
         $return = $next($request, $response);

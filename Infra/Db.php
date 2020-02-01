@@ -1,8 +1,19 @@
-<?php
+<?php /** @noinspection PhpUnhandledExceptionInspection */
+/** @noinspection PhpUndefinedMethodInspection */
 
 declare(strict_types = 1);
 
 namespace SlimRestApi\Infra;
+
+use DateTime;
+use DateTimeZone;
+use ErrorException;
+use InvalidArgumentException;
+use PDO;
+use PDOException;
+use PDOStatement;
+use RangeException;
+use Throwable;
 
 /**
  * Class Db, implements some util and config on top of PDO
@@ -15,6 +26,7 @@ class Db extends Singleton
     static protected $instance = null;
     static protected $statements = [];
 
+    /** @noinspection PhpUnhandledExceptionInspection */
     static public function transaction(callable $callable)
     {
         if (static::inTransaction()) {
@@ -25,13 +37,14 @@ class Db extends Singleton
             $result = call_user_func($callable);
             static::commit();
             return $result;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             static::rollback();
             throw $e;
         }
     }
 
-    static public function execute(string $query, array $params = []): \PDOStatement
+    /** @noinspection PhpUnhandledExceptionInspection */
+    static public function execute(string $query, array $params = []): PDOStatement
     {
         try {
 
@@ -44,15 +57,16 @@ class Db extends Singleton
             self::$statements[$md5]->execute($params);
             return self::$statements[$md5];
 
-        } catch (\PDOException $e) {
+        } catch (PDOException $e) {
 
             if (stripos($e->getMessage(), 'Duplicate') !== false) {
-                throw new \ErrorException('Duplicate key/name', 400, E_ERROR, $e->getFile(), $e->getLine());
+                throw new ErrorException('Duplicate key/name', 400, E_ERROR, $e->getFile(), $e->getLine());
             }
             throw $e;
         }
     }
 
+    /** @noinspection PhpUnhandledExceptionInspection */
     static public function date(string $datetime, string $timezone = 'UTC'): string
     {
         // there are some timezone bugs in PHP, just translate
@@ -64,12 +78,12 @@ class Db extends Singleton
 //                break;
 //        }
         // normalise date to UTC and MySQL-format
-        return (new \DateTime($datetime, new \DateTimeZone($timezone)))
-            ->setTimezone(new \DateTimeZone('UTC'))
+        return (new DateTime($datetime, new DateTimeZone($timezone)))
+            ->setTimezone(new DateTimeZone('UTC'))
             ->format('Y-m-d H:i:s');
     }
 
-    static public function update(string $table, $data, array $primkeyvalue): \PDOStatement
+    static public function update(string $table, $data, array $primkeyvalue): PDOStatement
     {
         assert(count($primkeyvalue) == 1);
         assert(ctype_alnum($table));
@@ -87,13 +101,14 @@ class Db extends Singleton
             $fields[] = $k . '=:' . $k;
         }
         if (empty($fields)) {
-            throw new \RangeException('Empty update');
+            throw new RangeException('Empty update');
         }
         $fields = implode(',', $fields);
         return static::execute("UPDATE {$table} SET {$fields} WHERE {$primkey}=:{$primkey}", $values);
     }
 
-    static public function insert(string $table, $data): \PDOStatement
+    /** @noinspection PhpUnused */
+    static public function insert(string $table, $data): PDOStatement
     {
         assert(ctype_alnum($table));
         $fields = [];
@@ -104,22 +119,22 @@ class Db extends Singleton
             $fields[] = $k . '=:' . $k;
         }
         if (empty($fields)) {
-            throw new \InvalidArgumentException('Empty insert');
+            throw new InvalidArgumentException('Empty insert');
         }
         $fields = implode(',', $fields);
         $placeholders = implode(',', array_keys($values));
         return static::execute("INSERT INTO {$table}({$fields})VALUES({$placeholders})", $values);
     }
 
-    static protected function instance(): \PDO
+    static protected function instance(): PDO
     {
         $dbhost = Ini::get('database_host');
         $dbname = Ini::get('database_name');
         $dbcharset = Ini::get('database_charset');
-        $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname};charset={$dbcharset}", Ini::get('database_user'), Ini::get('database_password'));
-        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        $pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false); // otherwise binding int-parameters will fail
-        $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
+        $pdo = new PDO("mysql:host={$dbhost};dbname={$dbname};charset={$dbcharset}", Ini::get('database_user'), Ini::get('database_password'));
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // otherwise binding int-parameters will fail
+        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
         return $pdo;
     }
 

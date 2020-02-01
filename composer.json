@@ -12,7 +12,7 @@
     "exception handling",
     "CORS"
   ],
-  "version" : "v1.0",
+  "version" : "v1.1",
   "type": "library",
   "license": "MIT",
   "homepage": "https://github.com/patricksavalle/slim-rest-api",
@@ -26,7 +26,9 @@
     "slim/slim": "^3.0",
     "patricksavalle/slim-request-params": "*",
     "palanik/corsslim": "dev-slim3",
-    "pavlakis/slim-cli": "^1.0"
+    "pavlakis/slim-cli": "^1.0",
+    "ext-pdo": "*",
+    "ext-openssl": "*"
   },
   "autoload": {
     "psr-4": {

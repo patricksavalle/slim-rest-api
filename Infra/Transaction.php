@@ -1,8 +1,11 @@
-<?php
+<?php /** @noinspection PhpUnhandledExceptionInspection */
+/** @noinspection PhpUnused */
 
 declare(strict_types = 1);
 
 namespace SlimRestApi\Infra;
+
+use stdClass;
 
 /**
  * Dynamic transaction.
@@ -28,7 +31,7 @@ namespace SlimRestApi\Infra;
  *      ->action( new InvokableClass(SomeParameter))
  *      ->execute();
  */
-class Transaction extends \stdClass
+class Transaction extends stdClass
 {
     protected $parts = [];
 
@@ -38,7 +41,7 @@ class Transaction extends \stdClass
         return $this;
     }
 
-    public function set(\stdClass $value): Transaction
+    public function set(stdClass $value): Transaction
     {
         foreach ($value as $k => $v) {
             /** @noinspection PhpVariableVariableInspection */
