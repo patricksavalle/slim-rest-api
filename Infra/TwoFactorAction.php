@@ -95,7 +95,6 @@ namespace SlimRestApi\Infra {
             }
 
             // Very simple template rendering, just iterate all object members and replace name with value
-            // Most object members are set from the POST body. Client can POST data that will be put into his template.
             foreach ($args as $member => $value) {
                 $body = str_replace("{{" . $member . "}}", filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS), $body);
             }
