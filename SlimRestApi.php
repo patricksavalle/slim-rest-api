@@ -1,6 +1,6 @@
-<?php
+<?php /** @noinspection PhpUnhandledExceptionInspection */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SlimRestApi;
 
@@ -14,6 +14,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
 use SlimRequestParams\RequestResponseArgsObject;
 use SlimRestApi\Infra\Ini;
+use SlimRestApi\Infra\TwoFactorAction;
 use Throwable;
 
 class SlimRestApi extends App
@@ -38,9 +39,8 @@ class SlimRestApi extends App
         // middleware that translates exceptions into 'normal' responses
         $this->add(function (
             ServerRequestInterface $request,
-            ResponseInterface $response,
-            callable $next)
-        : ResponseInterface {
+            ResponseInterface      $response,
+            callable               $next): ResponseInterface {
             try {
                 return $next($request, $response);
             } catch (Throwable $e) {
@@ -75,8 +75,7 @@ class SlimRestApi extends App
         $this->getContainer()['notFoundHandler'] = function ($c): callable {
             return function (
                 ServerRequestInterface $request,
-                ResponseInterface $response)
-            : ResponseInterface {
+                ResponseInterface      $response): ResponseInterface {
                 return $response->withStatus(404);
             };
         };
@@ -85,9 +84,8 @@ class SlimRestApi extends App
         $this->getContainer()['notAllowedHandler'] = function ($c): callable {
             return function (
                 ServerRequestInterface $request,
-                ResponseInterface $response,
-                array $methods)
-            : ResponseInterface {
+                ResponseInterface      $response,
+                array                  $methods): ResponseInterface {
                 return $response
                     ->withStatus(405)
                     ->withHeader('Allow', implode(', ', $methods));
@@ -108,10 +106,13 @@ class SlimRestApi extends App
             "exposeHeaders" => Ini::get('cors_expose_headers'),
             "maxAge" => Ini::get('cors_max_age'),
             // 1 or "TRUE" from the ini file are both not working as values for allowCredentials
-            "allowCredentials" => Ini::get('cors_allow_credentials') ? true : false,
+            "allowCredentials" => (bool)Ini::get('cors_allow_credentials'),
             "allowMethods" => Ini::get('cors_allow_methods'),
             "allowHeaders" => Ini::get('cors_allow_headers'),
         ]));
+
+        // Add the two factor handler to the server
+        $this->get("/2factor/{utoken:[[:alnum:]]{32}}", new TwoFactorAction);
     }
 
     // override in derived class to do extensive origin checks
