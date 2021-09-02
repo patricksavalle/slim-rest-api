@@ -23,6 +23,7 @@
     }
   ],
   "require": {
+    "php": ">=7.3",
     "slim/slim": "^3.0",
     "patricksavalle/slim-request-params": "*",
     "palanik/corsslim": "dev-slim3",
