@@ -1,25 +1,19 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SlimRestApi\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use SlimRestApi\Infra\Db;
 
-class CliRequest
+class DirtyReads
 {
-    public function __construct(int $time_limit = -1)
-    {
-        if ($time_limit !== -1) set_time_limit($time_limit);
-    }
-
+    /** @noinspection PhpUndefinedMethodInspection */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
-        if (PHP_SAPI !== 'cli') {
-            return $response->withStatus(404);
-        }
+        Db::exec("SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED");
         return $next($request, $response);
     }
-
 }
