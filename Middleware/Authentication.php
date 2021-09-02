@@ -16,10 +16,19 @@ class Authentication
 {
     static protected $session_token;
 
-    static public function session(): array
+    static public function getSession(): array
     {
         // returns the hashed user identification stored with the token
         return Db::execute("SELECT * FROM sessions348gd89 WHERE token=:token", [":token" => static::$session_token])->fetch();
+    }
+
+    // ---------------------------------------------------
+    // Logout
+    // ---------------------------------------------------
+
+    static public function deleteSession()
+    {
+        Db::execute("DELETE FROM sessions348gd89 WHERE token=:token", [":token" => self::$session_token]);
     }
 
     // ---------------------------------------------------
