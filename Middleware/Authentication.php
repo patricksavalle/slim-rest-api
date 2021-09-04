@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SlimRestApi\Infra\Db;
 use SlimRestApi\Infra\Password;
+use stdClass;
 
 // TODO change to HTTP Bearer authentication
 
@@ -16,7 +17,7 @@ class Authentication
 {
     static protected $session_token;
 
-    static public function getSession(): array
+    static public function getSession(): stdClass
     {
         // returns the hashed user identification stored with the token
         return Db::execute("SELECT * FROM authentications WHERE token=:token", [":token" => static::$session_token])->fetch();
