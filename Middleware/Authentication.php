@@ -19,7 +19,7 @@ class Authentication
     static public function getSession(): array
     {
         // returns the hashed user identification stored with the token
-        return Db::execute("SELECT * FROM sessions348gd89 WHERE token=:token", [":token" => static::$session_token])->fetch();
+        return Db::execute("SELECT * FROM authentications WHERE token=:token", [":token" => static::$session_token])->fetch();
     }
 
     // ---------------------------------------------------
@@ -28,7 +28,7 @@ class Authentication
 
     static public function deleteSession()
     {
-        Db::execute("DELETE FROM sessions348gd89 WHERE token=:token", [":token" => self::$session_token]);
+        Db::execute("DELETE FROM authentications WHERE token=:token", [":token" => self::$session_token]);
     }
 
     // ---------------------------------------------------
@@ -40,21 +40,23 @@ class Authentication
         // to make this module self-contained we create our own table on demand
         // this gives some overhead every time a session is created but not very much
         // we will store a hash of the used userid
-        Db::execute("CREATE TABLE IF NOT EXISTS sessions348gd89
+        if (Db::execute("CREATE TABLE IF NOT EXISTS authentications
             (
                 token      CHAR(32) NOT NULL,
                 lastupdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 userid     CHAR(32) NOT NULL,
                 PRIMARY KEY (token),
                 INDEX (lastupdate)
-            )");
+            )")->rowCount() > 0) {
+            error_log("Table authentications created on demand by " . __CLASS__);
+        }
 
         // delete expired tokens
-        Db::execute("DELETE FROM sessions348gd89 WHERE lastupdate < SUBDATE(CURRENT_TIMESTAMP, INTERVAL 1 HOUR)");
+        Db::execute("DELETE FROM authentications WHERE lastupdate < SUBDATE(CURRENT_TIMESTAMP, INTERVAL 1 HOUR)");
 
         // create a new token
         $token = Password::randomMD5();
-        if (Db::execute("INSERT INTO sessions348gd89(token,userid) VALUES (:token,MD5(:userid))",
+        if (Db::execute("INSERT INTO authentications(token,userid) VALUES (:token,MD5(:userid))",
                 [
                     ":token" => $token,
                     ":userid" => $userid,
@@ -73,10 +75,9 @@ class Authentication
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
-        $tokenAuthenticated = function(string $token): bool
-        {
+        $tokenAuthenticated = function (string $token): bool {
             // authenticate and actualize the token
-            return Db::execute("UPDATE sessions348gd89 SET lastupdate=NOW() 
+            return Db::execute("UPDATE authentications SET lastupdate=NOW() 
                     WHERE token=:token AND lastupdate > SUBDATE(CURRENT_TIMESTAMP, INTERVAL 1 HOUR)",
                     [':token' => $token])->rowCount() === 1;
         };
