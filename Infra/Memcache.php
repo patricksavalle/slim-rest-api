@@ -1,5 +1,4 @@
-<?php /** @noinspection PhpMultipleClassesDeclarationsInOneFile */
-/** @noinspection PhpMultipleClassDeclarationsInspection */
+<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
 /** @noinspection PhpUnnecessaryStaticReferenceInspection */
 /** @noinspection PhpUndefinedMethodInspection */
 /** @noinspection PhpUnhandledExceptionInspection */
@@ -78,14 +77,6 @@ namespace SlimRestApi\Infra {
             $mc = new Memcached();
             $mc->addServer(Ini::get('memcache_host'), Ini::get('memcache_port'));
             return $mc;
-        }
-    }
-
-    class MemcachedFunction
-    {
-        public function __invoke(callable $function, array $param_arr = [], int $expiration = 60)
-        {
-            return Memcache::call_user_func_array($function, $param_arr, $expiration);
         }
     }
 }
