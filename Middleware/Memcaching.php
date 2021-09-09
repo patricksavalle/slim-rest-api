@@ -20,6 +20,7 @@ class Memcaching
     /** @noinspection PhpUndefinedMethodInspection */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
+        assert($request->getMethod()==='GET');
         $return = $next($request, $response);
         Memcache::set($request->getUri(), $response->getBody(), $this->expiration);
         return $return;

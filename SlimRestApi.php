@@ -111,8 +111,6 @@ class SlimRestApi extends App
             "allowHeaders" => Ini::get('cors_allow_headers'),
         ]));
 
-        // Add the two factor handler to the server
-        $this->get("/2factor/{utoken:[[:alnum:]]{32}}", new TwoFactorAction);
     }
 
     // override in derived class to do extensive origin checks

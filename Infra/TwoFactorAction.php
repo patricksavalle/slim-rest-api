@@ -12,27 +12,28 @@ namespace SlimRestApi\Infra {
     /**
      * Generic mechanism for authorising actions through an email link.
      *
-     * Send a authorisation token to user:
+     * Send an authorisation token to user:
      *
      *  $params = BodyParameters::get();
-     *  (new TwoFactor)
+     *  (new YourTwoFactorAction)
      *      ->addAction(['Class', 'method'], [$params])
      *      ->createToken()
      *      ->sendToken($receiver, $loginurl, $subject, $instruction, $action);
      *
      * Handle the confirmed token, SLIM route-handler
      *
-     *  $this->get("/<url_segment>/{utoken:[[:alnum:]]{32}}", new TwoFactorAction);
+     *  $SlimApp->get("/<url_segment>/{utoken:[[:alnum:]]{32}}", new YourTwoFactorAction);
      *
-     * This will cause the actions to be run. The result of the last methods will be returned.
+     * This will cause the actions to be run. The result of the last action will be returned.
      */
-    class TwoFactorAction extends stdClass
+
+    abstract class TwoFactorAction extends stdClass
     {
         // MUST BE PUBLIC, otherwise it will not be enumerated into the Locker
         public $actions = [];
         public $utoken = null;
 
-        public function addAction($phpfile, callable $callable, array $arguments): TwoFactorAction
+        public function addAction(string $phpfile, callable $callable, array $arguments): TwoFactorAction
         {
             $this->actions[] = [$phpfile, $callable, $arguments];
             return $this;
@@ -62,11 +63,12 @@ namespace SlimRestApi\Infra {
             return isset($result) ? $response->withJson($result) : $response;
         }
 
+        // --------------------------------------------------------------------------------
+        // Send the two factor code by mail
+        // --------------------------------------------------------------------------------
+
         /** @noinspection PhpUnusedParameterInspection */
-        protected function sendMail($receiver, $sender, $sendername, $subject, $body)
-        {
-            throw new Exception(__METHOD__ . " must be overloaded by extending " . __CLASS__);
-        }
+        protected abstract function sendMail(string $receiver, string $sender, string $sendername, string $subject, string $body);
 
         /**
          * Send the authorisation request to the user
