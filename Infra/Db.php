@@ -1,7 +1,7 @@
 <?php /** @noinspection PhpUnhandledExceptionInspection */
 /** @noinspection PhpUndefinedMethodInspection */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SlimRestApi\Infra;
 
@@ -66,6 +66,16 @@ class Db extends Singleton
         }
     }
 
+    static public function fetchAll(string $query, array $params = []): array
+    {
+        return self::execute($query, $params)->fetchAll();
+    }
+
+    static public function fetch(string $query, array $params = []): \stdClass
+    {
+        return self::execute($query, $params)->fetch();
+    }
+
     /** @noinspection PhpUnhandledExceptionInspection */
     static public function date(string $datetime, string $timezone = 'UTC'): string
     {
@@ -104,7 +114,7 @@ class Db extends Singleton
             throw new RangeException('Empty update');
         }
         $fields = implode(',', $fields);
-        return static::execute("UPDATE {$table} SET {$fields} WHERE {$primkey}=:{$primkey}", $values);
+        return static::execute("UPDATE $table SET $fields WHERE $primkey=:$primkey", $values);
     }
 
     /** @noinspection PhpUnused */
@@ -123,7 +133,7 @@ class Db extends Singleton
         }
         $fields = implode(',', $fields);
         $placeholders = implode(',', array_keys($values));
-        return static::execute("INSERT INTO {$table}({$fields})VALUES({$placeholders})", $values);
+        return static::execute("INSERT INTO $table($fields)VALUES($placeholders)", $values);
     }
 
     static protected function instance(): PDO
@@ -131,7 +141,7 @@ class Db extends Singleton
         $dbhost = Ini::get('database_host');
         $dbname = Ini::get('database_name');
         $dbcharset = Ini::get('database_charset');
-        $pdo = new PDO("mysql:host={$dbhost};dbname={$dbname};charset={$dbcharset}", Ini::get('database_user'), Ini::get('database_password'));
+        $pdo = new PDO("mysql:host=$dbhost;dbname=$dbname;charset=$dbcharset", Ini::get('database_user'), Ini::get('database_password'));
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // otherwise binding int-parameters will fail
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
