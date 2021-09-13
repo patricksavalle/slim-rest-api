@@ -76,7 +76,8 @@ namespace SlimRestApi\Infra {
         public function sendToken(string $receiver, string $loginurl, string $subject, string $instruction, string $action): TwoFactorAction
         {
             // Get the email template from the client
-            $template_url = Ini::get('email_twofactor_template') ?? __DIR__ . "/twofactoraction.html";
+            $template_url = Ini::get('email_twofactor_template');
+            if (empty($template_url)) $template_url = __DIR__ . DIRECTORY_SEPARATOR . "twofactoraction.html";
             $body = file_get_contents($template_url);
             if ($body === false) {
                 throw new Exception('Cannot open email template: ' . $template_url);
