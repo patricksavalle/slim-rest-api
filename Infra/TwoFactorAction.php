@@ -67,7 +67,6 @@ namespace SlimRestApi\Infra {
         // Send the two factor code by mail
         // --------------------------------------------------------------------------------
 
-        /** @noinspection PhpUnusedParameterInspection */
         protected abstract function sendMail(string $receiver, string $sender, string $sendername, string $subject, string $body);
 
         /**
@@ -76,38 +75,30 @@ namespace SlimRestApi\Infra {
          */
         public function sendToken(string $receiver, string $loginurl, string $subject, string $instruction, string $action): TwoFactorAction
         {
-            // template of email to be sent
-            $template_url = Ini::get('email_twofactor_template');
-
-            // In $args are the template variables for the email template
-            $args = new stdClass;
-            $args->utoken = $this->utoken;
-            $args->sender = Ini::get('email_sender');
-            $args->sendername = Ini::get('email_sendername');
-            $args->subject = $subject;
-            $args->instructions = $instruction;
-            $args->action = $action;
-            $args->receiver = $receiver;
-            $args->loginurl = $loginurl;
-
             // Get the email template from the client
+            $template_url = Ini::get('email_twofactor_template') ?? __DIR__ . "/twofactoraction.html";
             $body = file_get_contents($template_url);
             if ($body === false) {
-                throw new Exception('Cannot open email template: ' . $args->template_url);
+                throw new Exception('Cannot open email template: ' . $template_url);
             }
+
+            // In $args are the template variables for the email template
+            $args= [];
+            $args["logintoken"] = $this->utoken;
+            $args["sender"] = Ini::get('email_sender');
+            $args["sendername"] = Ini::get('email_sendername');
+            $args["subject"] = $subject;
+            $args["instruction"] = $instruction;
+            $args["action"] = $action;
+            $args["receiver"] = $receiver;
+            $args["loginurl"] = $loginurl;
 
             // Very simple template rendering, just iterate all object members and replace name with value
-            foreach ($args as $member => $value) {
-                $body = str_replace("{{" . $member . "}}", filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS), $body);
+            foreach ($args as $key => $value) {
+                $body = str_replace("{{" . $key . "}}", filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS), $body);
             }
 
-            $this->sendMail(
-                $args->receiver,
-                $args->sender,
-                $args->sendername,
-                $args->subject,
-                $body
-            );
+            $this->sendMail($args["receiver"], $args["sender"], $args["sendername"], $args["subject"], $body);
 
             return $this;
         }

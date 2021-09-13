@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
 <head>
-    <!-- https://github.com/mailgun/transactional-email-templates -->
     <meta name="viewport" content="width=device-width"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>{{subject}}</title>
@@ -122,7 +121,7 @@
                                         itemtype="http://schema.org/HttpActionHandler"
                                         style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
                                         valign="top">
-                                        <a href="{{loginurl}}/{{utoken}}" class="btn-primary" itemprop="url"
+                                        <a href="{{loginurl}}{{logintoken}}" class="btn-primary" itemprop="url"
                                            style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #348eda; margin: 0; border-color: #348eda; border-style: solid; border-width: 10px 20px;">
                                             {{action}}
                                         </a>
@@ -132,7 +131,7 @@
                                     <td class="content-block"
                                         style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;"
                                         valign="top">
-                                        This request will automatically expire in 24hrs or upon use.
+                                        This request will automatically expire in 2hrs or upon use.
                                     </td>
                                 </tr>
                             </table>

@@ -13,6 +13,7 @@ use PDO;
 use PDOException;
 use PDOStatement;
 use RangeException;
+use stdClass;
 use Throwable;
 
 /**
@@ -71,7 +72,7 @@ class Db extends Singleton
         return self::execute($query, $params)->fetchAll();
     }
 
-    static public function fetch(string $query, array $params = []): \stdClass
+    static public function fetch(string $query, array $params = []): stdClass
     {
         return self::execute($query, $params)->fetch();
     }
