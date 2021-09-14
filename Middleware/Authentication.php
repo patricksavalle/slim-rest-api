@@ -57,17 +57,17 @@ class Authentication
         Db::execute("DELETE FROM authentications23ghd94d WHERE lastupdate < SUBDATE(CURRENT_TIMESTAMP, INTERVAL 1 HOUR)");
 
         // create a new token
-        $token = Password::randomMD5();
+        self::$session_token = Password::randomMD5();
         if (Db::execute("INSERT INTO authentications23ghd94d(token,userid) VALUES (:token,MD5(:userid))",
                 [
-                    ":token" => $token,
+                    ":token" => self::$session_token,
                     ":userid" => $userid,
                 ])->rowCount() == 0
         ) {
             throw new Exception;
         }
         // now logged in
-        return ['X-Session-Token' => $token];
+        return ['X-Session-Token' => self::$session_token];
     }
 
     // -------------------------------------------------------------
