@@ -9,12 +9,11 @@ require_once 'vendor/autoload.php';
 use CorsSlim\CorsSlim;
 use ErrorException;
 use pavlakis\cli\CliRequest;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use SlimRequestParams\RequestResponseArgsObject;
 use SlimRestApi\Infra\Ini;
-use SlimRestApi\Infra\TwoFactorAction;
 use Throwable;
 
 class SlimRestApi extends App
@@ -38,9 +37,9 @@ class SlimRestApi extends App
 
         // middleware that translates exceptions into 'normal' responses
         $this->add(function (
-            ServerRequestInterface $request,
-            ResponseInterface      $response,
-            callable               $next): ResponseInterface {
+            Request  $request,
+            Response $response,
+            callable $next): Response {
             try {
                 return $next($request, $response);
             } catch (Throwable $e) {
@@ -74,8 +73,8 @@ class SlimRestApi extends App
         // blank 404 pages
         $this->getContainer()['notFoundHandler'] = function ($c): callable {
             return function (
-                ServerRequestInterface $request,
-                ResponseInterface      $response): ResponseInterface {
+                Request  $request,
+                Response $response): Response {
                 return $response->withStatus(404);
             };
         };
@@ -83,9 +82,9 @@ class SlimRestApi extends App
         // blank 405 pages
         $this->getContainer()['notAllowedHandler'] = function ($c): callable {
             return function (
-                ServerRequestInterface $request,
-                ResponseInterface      $response,
-                array                  $methods): ResponseInterface {
+                Request  $request,
+                Response $response,
+                array    $methods): Response {
                 return $response
                     ->withStatus(405)
                     ->withHeader('Allow', implode(', ', $methods));
