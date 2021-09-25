@@ -84,7 +84,7 @@ class Authentication
                     [':token' => $token])->rowCount() === 1;
         };
 
-        static::$session_token = $request->getHeader('X-Session-Token')[0];
+        static::$session_token = $request->getHeader('X-Session-Token')[0] ?? null;
         if (isset(static::$session_token) and $tokenAuthenticated(static::$session_token)
         ) {
             return $next($request, $response);
