@@ -67,9 +67,21 @@ class Db extends Singleton
         }
     }
 
-    static public function fetchAll(string $query, array $params = []): array
+    static public function fetchAll(string $query, array $params = [], int $cachettl = 0): array
     {
-        return self::execute($query, $params)->fetchAll();
+        if ($cachettl===0) {
+            return self::execute($query, $params)->fetchAll();
+        }
+        $cache_key = hash('md5', $query . serialize($params));
+        $result = Memcache::get($cache_key);
+        if ($result === false) {
+            $result = self::execute($query, $params)->fetchAll();
+            if (Memcache::set($cache_key, $result, $cachettl) === false) {
+                $error_code = Memcache::getResultCode();
+                error_log("Memcached error ($error_code) on method: " . __METHOD__);
+            }
+        }
+        return $result;
     }
 
     static public function fetch(string $query, array $params = []): stdClass
