@@ -1,8 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SlimRestApi\Infra;
+
+use Exception;
+use InvalidArgumentException;
 
 class Ini
 {
@@ -13,7 +16,10 @@ class Ini
         if (null === static::$iniValues) {
             static::$iniValues = parse_ini_file('slim-rest-api.ini', false, INI_SCANNER_TYPED);
         }
-        return static::$iniValues[$name];
+        try {
+            return static::$iniValues[$name];
+        } catch (Exception $e) {
+            throw new InvalidArgumentException("Key '$name' not found in slim-rest-api.ini" );
+        }
     }
 }
-

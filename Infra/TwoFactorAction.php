@@ -73,33 +73,20 @@ namespace SlimRestApi\Infra {
          * Send the authorisation request to the user
          * @throws Exception
          */
-        public function sendToken(string $receiver, string $loginurl, string $subject, string $instruction, string $action): TwoFactorAction
+        public function sendToken(string $email, string $subject, $template, stdClass $args): TwoFactorAction
         {
-            // Get the email template from the client
-            $template_url = Ini::get('email_twofactor_template');
-            if (empty($template_url)) $template_url = __DIR__ . DIRECTORY_SEPARATOR . "twofactoraction.html";
-            $body = file_get_contents($template_url);
-            if ($body === false) {
-                throw new Exception('Cannot open email template: ' . $template_url);
-            }
+            // get the email template
+            $body = file_get_contents($template ?? __DIR__ . DIRECTORY_SEPARATOR . "twofactoraction.html");
 
-            // In $args are the template variables for the email template
-            $args= [];
-            $args["logintoken"] = $this->utoken;
-            $args["sender"] = Ini::get('email_sender');
-            $args["sendername"] = Ini::get('email_sendername');
-            $args["subject"] = $subject;
-            $args["instruction"] = $instruction;
-            $args["action"] = $action;
-            $args["receiver"] = $receiver;
-            $args["loginurl"] = $loginurl;
+            // add the token to the template variables
+            $args->logintoken =  $this->utoken;
 
-            // Very simple template rendering, just iterate all object members and replace name with value
+            // Very simple template rendering, just iterate all object members and replace {{name}} with value
             foreach ($args as $key => $value) {
                 $body = str_replace("{{" . $key . "}}", filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS), $body);
             }
 
-            $this->sendMail($args["receiver"], $args["sender"], $args["sendername"], $args["subject"], $body);
+            $this->sendMail($email, Ini::get('email_sender'), Ini::get('email_sendername'), $subject, $body);
 
             return $this;
         }
