@@ -44,7 +44,7 @@ abstract class Singleton extends stdClass
         return static::$instance;
     }
 
-    private final function __clone()
+    private function __clone()
     {
     }
 
