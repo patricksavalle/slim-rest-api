@@ -13,9 +13,10 @@ namespace {
 
         class Memcached
         {
-            public function addServer($host, $port)
+            /** @noinspection PhpUnusedParameterInspection */
+            public function addServer(string $host, int $port)
             {
-                assert($host !== null and $port !== null);
+                assert(!empty($host));
                 error_log("class Memcached not found, dummy used");
             }
 
@@ -75,7 +76,7 @@ namespace SlimRestApi\Infra {
         static protected function instance(): Memcached
         {
             $mc = new Memcached();
-            $mc->addServer(Ini::get('memcache_host'), Ini::get('memcache_port'));
+            $mc->addServer(Ini::get('memcache_host'), (int)Ini::get('memcache_port'));
             return $mc;
         }
     }
