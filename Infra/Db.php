@@ -26,6 +26,7 @@ class Db extends Singleton
 {
     static protected $instance = null;
     static protected $statements = [];
+    static protected $logqueries = false;
 
     /** @noinspection PhpUnhandledExceptionInspection */
     static public function transaction(callable $callable)
@@ -48,7 +49,8 @@ class Db extends Singleton
     static public function execute(string $query, array $params = []): PDOStatement
     {
         try {
-
+            error_log( "Query sql: ". $query);
+            $timems = microtime(true);
             $md5 = md5($query);
             // check if we already prepared this query
             if (empty(self::$statements[$md5])) {
@@ -56,6 +58,7 @@ class Db extends Singleton
             }
 
             self::$statements[$md5]->execute($params);
+            error_log( "Query time: " . (string)round((microtime(true) - $timems) * 1000) . "ms");
             return self::$statements[$md5];
 
         } catch (PDOException $e) {
@@ -151,6 +154,7 @@ class Db extends Singleton
 
     static protected function instance(): PDO
     {
+        self::$logqueries = Ini::get('database_query_logging');
         $dbhost = Ini::get('database_host');
         $dbname = Ini::get('database_name');
         $dbcharset = Ini::get('database_charset');
