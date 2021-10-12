@@ -67,7 +67,7 @@ class Db extends Singleton
         }
     }
 
-    static public function fetchAll(string $query, array $params = [], int $cachettl = 0): array
+    static public function fetchAll(string $query, array $params = [], int $cachettl = 0)
     {
         if ($cachettl===0) {
             return self::execute($query, $params)->fetchAll();
@@ -84,7 +84,7 @@ class Db extends Singleton
         return $result;
     }
 
-    static public function fetch(string $query, array $params = []): stdClass
+    static public function fetch(string $query, array $params = [])
     {
         return self::execute($query, $params)->fetch();
     }
