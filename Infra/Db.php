@@ -49,7 +49,6 @@ class Db extends Singleton
     static public function execute(string $query, array $params = []): PDOStatement
     {
         try {
-            error_log( "Query sql: ". $query);
             $timems = microtime(true);
             $md5 = md5($query);
             // check if we already prepared this query
@@ -58,7 +57,7 @@ class Db extends Singleton
             }
 
             self::$statements[$md5]->execute($params);
-            error_log( "Query time: " . (string)round((microtime(true) - $timems) * 1000) . "ms");
+            error_log( "[" . (string)round((microtime(true) - $timems) * 1000) . "ms]: " . $query);
             return self::$statements[$md5];
 
         } catch (PDOException $e) {
