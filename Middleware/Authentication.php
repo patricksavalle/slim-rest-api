@@ -17,11 +17,16 @@ class Authentication
 {
     static protected $session_token;
 
+    static public function getSessionTtl() : int
+    {
+        return 1;
+    }
+
     static public function getSession(): stdClass
     {
         // returns the hashed user identification stored with the token
         // can be used in overloaded method to retrieve user profile
-        return Db::execute("SELECT * FROM authentications23ghd94d WHERE token=:token", [":token" => static::$session_token])->fetch();
+        return Db::execute("SELECT * FROM authentications23ghd94d WHERE token=:token", [":token" => self::$session_token])->fetch();
     }
 
     // ---------------------------------------------------
@@ -54,7 +59,8 @@ class Authentication
         }
 
         // delete expired tokens
-        Db::execute("DELETE FROM authentications23ghd94d WHERE lastupdate < SUBDATE(CURRENT_TIMESTAMP, INTERVAL 1 HOUR)");
+        Db::execute("DELETE FROM authentications23ghd94d WHERE lastupdate < SUBDATE(CURRENT_TIMESTAMP, INTERVAL :int HOUR)",
+            [":int" => static::getSessionTtl()]);
 
         // create a new token
         self::$session_token = Password::randomMD5();
@@ -80,12 +86,12 @@ class Authentication
         $tokenAuthenticated = function (string $token): bool {
             // authenticate and actualize the token if still valid
             return Db::execute("UPDATE authentications23ghd94d SET lastupdate=NOW() 
-                    WHERE token=:token AND lastupdate > SUBDATE(CURRENT_TIMESTAMP, INTERVAL 1 HOUR)",
-                    [':token' => $token])->rowCount() === 1;
+                    WHERE token=:token AND lastupdate > SUBDATE(CURRENT_TIMESTAMP, INTERVAL :int HOUR)",
+                    [':token' => $token, ":int" => static::getSessionTtl()])->rowCount() === 1;
         };
 
-        static::$session_token = $request->getHeader('X-Session-Token')[0] ?? null;
-        if (isset(static::$session_token) and $tokenAuthenticated(static::$session_token)
+        self::$session_token = $request->getHeader('X-Session-Token')[0] ?? null;
+        if (isset(self::$session_token) and $tokenAuthenticated(self::$session_token)
         ) {
             return $next($request, $response);
         }
