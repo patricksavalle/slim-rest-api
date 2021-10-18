@@ -13,7 +13,6 @@ use PDO;
 use PDOException;
 use PDOStatement;
 use RangeException;
-use stdClass;
 use Throwable;
 
 /**
@@ -48,6 +47,10 @@ class Db extends Singleton
     /** @noinspection PhpUnhandledExceptionInspection */
     static public function execute(string $query, array $params = []): PDOStatement
     {
+        static $query_logging = -1;
+        if ($query_logging===-1) {
+            $query_logging = Ini::get("database_query_logging");
+        }
         try {
             $timems = microtime(true);
             $md5 = md5($query);
@@ -55,9 +58,8 @@ class Db extends Singleton
             if (empty(self::$statements[$md5])) {
                 self::$statements[$md5] = static::prepare($query);
             }
-
             self::$statements[$md5]->execute($params);
-            error_log( "[" . (string)round((microtime(true) - $timems) * 1000) . "ms]: " . $query);
+            if ($query_logging) error_log( "[" . round((microtime(true) - $timems) * 1000) . "ms]: " . $query);
             return self::$statements[$md5];
 
         } catch (PDOException $e) {
@@ -94,14 +96,6 @@ class Db extends Singleton
     /** @noinspection PhpUnhandledExceptionInspection */
     static public function date(string $datetime, string $timezone = 'UTC'): string
     {
-        // there are some timezone bugs in PHP, just translate
-//        switch ($timezone) {
-//            case 'Asia/Yangon' :
-//                error_log("Asia/Yangon converted to MMT, check if newest PHP already implements this timezone");
-//                $timezone = 'MMT'; // Myanmar Time
-//                // bug report: https://bugs.php.net/bug.php?id=73467
-//                break;
-//        }
         // normalise date to UTC and MySQL-format
         return (new DateTime($datetime, new DateTimeZone($timezone)))
             ->setTimezone(new DateTimeZone('UTC'))

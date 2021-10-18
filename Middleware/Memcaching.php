@@ -24,7 +24,6 @@ class Memcaching
 
         $cache = Memcache::get($request->getUri());
         if ($cache === false) {
-            error_log( "memcache miss: ". $request->getUri());
             $return = $next($request, $response->withHeader("cache-control", "max-age=" . $this->expiration));
             Memcache::set($request->getUri(), $response->getBody(), $this->expiration);
         } else {
