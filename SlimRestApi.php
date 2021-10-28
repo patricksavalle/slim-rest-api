@@ -50,7 +50,7 @@ class SlimRestApi extends App
                 if ($status >= 500) {
                     error_log($e->getMessage() . ' @ ' . $e->getFile() . '(' . $e->getLine() . ')');
                 }
-                return $response->withJson($e->getMessage(), $status);
+                return $response->withJson(["message" => $e->getMessage(),"code" => $status], $status);
             }
         });
 
