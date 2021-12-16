@@ -10,6 +10,7 @@ Turns the default SLIM App-class into a production-grade JSON REST-API base-clas
 - CLI support to accept and protect for instance cronjob calls from the server
 - CORS / cross-origin resource sharing support
 - Middleware for database optimisation and memcache support
+- Query caching (using APCu)
 
 Very simple to use, just use the SlimRestApi-class instead of the standard Slim App-class.
 
@@ -30,7 +31,7 @@ Example _**`index.php`**_:
     use SlimRequestParams\BodyParameters;
     use SlimRequestParams\QueryParameters;
     use SlimRestApi\Middleware\CliRequest;
-    use SlimRestApi\Middleware\Memcaching;
+    use SlimRestApi\Middleware\Cacheable;
     use SlimRestApi\Middleware\ReadOnly;
     use SlimRestApi\SlimRestApi;
     use Psr\Http\Message\ResponseInterface;
@@ -130,13 +131,6 @@ For examples see: https://github.com/pavlakis/slim-cli
     $YourApp->get(...)->add( new CliRequest );
 
   
-#### Add response of a route to memcache
-  
-So the webserver (Apache, NGINX, etc.) can first check memcache before activating the API. Uses the methods URL (path- and query-part) as key. You need to setup memcache and Apache accordingly.
-    
-    use SlimRestApi\Middleware\Memcaching;
-    $YourApp->get(...)->add( new Memcaching );
-    
 ### Available helpers
 
 #### Database / PDO access
@@ -155,6 +149,8 @@ All PDO-statements are accessible through the Db-singleton (magic method). To pr
 
     /** @noinspection PhpUndefinedMethodInspection */
 
+Easy query caching (using APCu).
+
 #### INI-file / configuration
 
 Makes INI's as simple as possible. Looks for a 'slim-rest-api.ini' file in the webroot, see project for axeample.
@@ -169,6 +165,8 @@ Provides a memcached version of call_user_func_array(). Use only for true functi
     use SlimRestApi/Memcache;
     $value = Memcache::call_user_func_array(...);
      
+These functions actually uses APCu as caching engine.
+
 ### Contributing
 
 Fork it.

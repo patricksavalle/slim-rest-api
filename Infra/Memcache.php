@@ -5,50 +5,11 @@
 
 declare(strict_types = 1);
 
-namespace {
-
-    if (!class_exists("Memcached")) {
-
-        /** @noinspection PhpMultipleClassesDeclarationsInOneFile */
-
-        class Memcached
-        {
-            /** @noinspection PhpUnusedParameterInspection */
-            public function addServer(string $host, int $port)
-            {
-                assert(!empty($host));
-                error_log("class Memcached not found, dummy used");
-            }
-
-            public function get($key)
-            {
-                assert($key !== null);
-                return false;
-            }
-
-            public function set($key, $value, $expiration)
-            {
-                assert($key !== null and $value !== null and $expiration !== null);
-                return true;
-            }
-
-            /** @noinspection PhpUnused */
-            public function getResultCode(): int
-            {
-                return 1;
-            }
-        }
-
-    }
-}
-
 namespace SlimRestApi\Infra {
 
     use Exception;
-    use Memcached;
 
-    /** @noinspection PhpMultipleClassesDeclarationsInOneFile */
-    final class Memcache extends Singleton
+    final class Memcache
     {
         static protected $instance = null;
 
@@ -61,23 +22,15 @@ namespace SlimRestApi\Infra {
             assert($method_name != 'Closure::__invoke');
             // Mangle function signature and try to get from cache
             $cache_key = hash('md5', $method_name . serialize($param_arr));
-            $result = static::get($cache_key);
+            $result = apcu_fetch($cache_key);
             if ($result === false) {
                 // if not, call the function and cache result
                 $result = call_user_func_array($function, $param_arr);
-                if (static::set($cache_key, $result, $expiration) === false) {
-                    $error_code = static::getResultCode();
-                    error_log("Memcached error ($error_code) on method: $method_name");
+                if (apcu_add($cache_key, $result, $expiration) === false) {
+                    error_log("APCu error on method: $method_name");
                 }
             }
             return $result;
-        }
-
-        static protected function instance(): Memcached
-        {
-            $mc = new Memcached();
-            $mc->addServer(Ini::get('memcache_host'), (int)Ini::get('memcache_port'));
-            return $mc;
         }
     }
 }

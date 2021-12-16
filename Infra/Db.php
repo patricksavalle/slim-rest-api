@@ -77,12 +77,11 @@ class Db extends Singleton
             return self::execute($query, $params)->fetchAll();
         }
         $cache_key = hash('md5', $query . serialize($params));
-        $result = Memcache::get($cache_key);
+        $result = apcu_fetch($cache_key);
         if ($result === false) {
             $result = self::execute($query, $params)->fetchAll();
-            if (Memcache::set($cache_key, $result, $cachettl) === false) {
-                $error_code = Memcache::getResultCode();
-                error_log("Memcached error ($error_code) on method: " . __METHOD__);
+            if (apcu_add($cache_key, $result, $cachettl) === false) {
+                error_log("APCu error on method: " . __METHOD__);
             }
         }
         return $result;

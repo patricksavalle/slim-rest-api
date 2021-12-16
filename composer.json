@@ -30,7 +30,8 @@
     "pavlakis/slim-cli": "^1.0",
     "ext-pdo": "*",
     "ext-openssl": "*",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-apcu": "*"
   },
   "autoload": {
     "psr-4": {
