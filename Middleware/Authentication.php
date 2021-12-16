@@ -15,9 +15,9 @@ use stdClass;
 
 class Authentication
 {
-    static protected $session_token;
+    static private $session = null;
 
-    static public function getSessionTtl() : int
+    static public function getSessionTtl(): int
     {
         return 1;
     }
@@ -26,7 +26,7 @@ class Authentication
     {
         // returns the hashed user identification stored with the token
         // can be used in overloaded method to retrieve user profile
-        return Db::execute("SELECT * FROM authentications23ghd94d WHERE token=:token", [":token" => self::$session_token])->fetch();
+        return self::$session;
     }
 
     // ---------------------------------------------------
@@ -35,7 +35,7 @@ class Authentication
 
     static public function deleteSession()
     {
-        Db::execute("DELETE FROM authentications23ghd94d WHERE token=:token", [":token" => self::$session_token]);
+        Db::execute("DELETE FROM authentications23ghd94d WHERE token=:token", [":token" => self::$session->token]);
     }
 
     // ---------------------------------------------------
@@ -63,17 +63,17 @@ class Authentication
             [":int" => static::getSessionTtl()]);
 
         // create a new token
-        self::$session_token = Password::randomMD5();
+        $session_token = Password::randomMD5();
         if (Db::execute("INSERT INTO authentications23ghd94d(token,userid) VALUES (:token,MD5(:userid))",
                 [
-                    ":token" => self::$session_token,
+                    ":token" => $session_token,
                     ":userid" => $userid,
                 ])->rowCount() == 0
         ) {
             throw new Exception;
         }
         // now logged in
-        return ['X-Session-Token' => self::$session_token];
+        return ['X-Session-Token' => $session_token];
     }
 
     // -------------------------------------------------------------
@@ -83,18 +83,21 @@ class Authentication
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
     {
-        $tokenAuthenticated = function (string $token): bool {
-            // authenticate and actualize the token if still valid
-            return Db::execute("UPDATE authentications23ghd94d SET lastupdate=NOW() 
-                    WHERE token=:token AND lastupdate > SUBDATE(CURRENT_TIMESTAMP, INTERVAL :int HOUR)",
-                    [':token' => $token, ":int" => static::getSessionTtl()])->rowCount() === 1;
-        };
-
-        self::$session_token = $request->getHeader('X-Session-Token')[0] ?? null;
-        if (isset(self::$session_token) and $tokenAuthenticated(self::$session_token)
-        ) {
-            return $next($request, $response);
+        // extract token from header
+        $token = $request->getHeader('X-Session-Token')[0] ?? false;
+        if ($token !== false) {
+            // retrieve the token if still valid
+            self::$session = Db::execute("SELECT * FROM authentications23ghd94d 
+                WHERE token=:token AND lastupdate > SUBDATE(CURRENT_TIMESTAMP, INTERVAL :int HOUR)",
+                [':token' => $token, ":int" => static::getSessionTtl()])->fetch();
+            if (self::$session !== false) {
+                // update the token
+                Db::execute("UPDATE authentications23ghd94d SET lastupdate=CURRENT_TIMESTAMP WHERE token=:token", [':token' => $token]);
+                // continue execution
+                return $next($request, $response);
+            }
         }
+        // deny authorization
         return $response
             ->withJson("Invalid token in X-Session-Token header")
             ->withStatus(401)
