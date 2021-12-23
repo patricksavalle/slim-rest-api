@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace SlimRestApi\Middleware {
 
-    use DateInterval;
     use DateTime;
     use DateTimeInterface;
     use Psr\Http\Message\ResponseInterface;
