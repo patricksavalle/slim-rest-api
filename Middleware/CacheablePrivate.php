@@ -11,7 +11,7 @@ namespace SlimRestApi\Middleware {
     use Psr\Http\Message\ResponseInterface;
     use Psr\Http\Message\ServerRequestInterface;
 
-    class Cacheable
+    class CacheablePrivate
     {
         protected $expiration;
 
@@ -23,7 +23,7 @@ namespace SlimRestApi\Middleware {
         public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
         {
             assert($request->getMethod() === 'GET');
-            return $next($request, $response->withHeader("cache-control", "public, max-age=" . $this->expiration));
+            return $next($request, $response->withHeader("cache-control", "private, max-age=" . $this->expiration));
         }
     }
 }
