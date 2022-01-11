@@ -3,7 +3,7 @@
 /** @noinspection PhpUndefinedMethodInspection */
 /** @noinspection PhpUnhandledExceptionInspection */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SlimRestApi\Infra {
 
@@ -15,10 +15,7 @@ namespace SlimRestApi\Infra {
 
         final static public function call_user_func_array(callable $function, array $param_arr, int $expiration = 0)
         {
-            if (!is_callable($function, false, $method_name)) {
-                throw new Exception("Invalid function call" . print_r($function, true));
-            }
-            // Don't allow anonymous functions
+            assert(is_callable($function, false, $method_name));
             assert($method_name != 'Closure::__invoke');
             // Mangle function signature and try to get from cache
             $cache_key = hash('md5', $method_name . serialize($param_arr));
