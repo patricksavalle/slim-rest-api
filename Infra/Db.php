@@ -48,7 +48,7 @@ class Db extends Singleton
     static public function execute(string $query, array $params = []): PDOStatement
     {
         static $query_logging = -1;
-        if ($query_logging===-1) {
+        if ($query_logging === -1) {
             $query_logging = Ini::get("database_query_logging");
         }
         try {
@@ -59,7 +59,7 @@ class Db extends Singleton
                 self::$statements[$md5] = static::prepare($query);
             }
             self::$statements[$md5]->execute($params);
-            if ($query_logging) error_log( "[" . round((microtime(true) - $timems) * 1000) . "ms]: " . $query);
+            if ($query_logging) error_log("[" . round((microtime(true) - $timems) * 1000) . "ms]: " . $query);
             return self::$statements[$md5];
 
         } catch (PDOException $e) {
@@ -73,15 +73,15 @@ class Db extends Singleton
 
     static public function fetchAll(string $query, array $params = [], int $cachettl = 0)
     {
-        if ($cachettl===0) {
+        if ($cachettl === 0) {
             return self::execute($query, $params)->fetchAll();
         }
         $cache_key = hash('md5', $query . serialize($params));
         $result = apcu_fetch($cache_key);
         if ($result === false) {
             $result = self::execute($query, $params)->fetchAll();
-            if (apcu_add($cache_key, $result, $cachettl) === false) {
-                error_log("APCu error on method: " . __METHOD__);
+            if ($result !== false) {
+                apcu_add($cache_key, $result, $cachettl);
             }
         }
         return $result;
