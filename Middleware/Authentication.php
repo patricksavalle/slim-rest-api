@@ -9,20 +9,19 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SlimRestApi\Infra\Db;
 use SlimRestApi\Infra\Password;
-use stdClass;
 
 // TODO change to HTTP Bearer authentication
 
 class Authentication
 {
-    static private $session = null;
+    static private $session;
 
     static public function getSessionTtl(): int
     {
         return 1;
     }
 
-    static public function getSession(): stdClass
+    static public function getSession()
     {
         // returns the hashed user identification stored with the token
         // can be used in overloaded method to retrieve user profile
