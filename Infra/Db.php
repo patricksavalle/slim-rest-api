@@ -62,11 +62,8 @@ class Db extends Singleton
             if ($query_logging) error_log("[" . round((microtime(true) - $timems) * 1000) . "ms]: " . $query);
             return self::$statements[$md5];
 
-        } catch (PDOException $e) {
-
-            if (stripos($e->getMessage(), 'Duplicate') !== false) {
-                throw new ErrorException('Duplicate key/name', 400, E_ERROR, $e->getFile(), $e->getLine());
-            }
+        } catch (Throwable $e) {
+            error_log($query);
             throw $e;
         }
     }
