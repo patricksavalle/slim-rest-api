@@ -7,10 +7,8 @@ namespace SlimRestApi\Infra;
 
 use DateTime;
 use DateTimeZone;
-use ErrorException;
 use InvalidArgumentException;
 use PDO;
-use PDOException;
 use PDOStatement;
 use RangeException;
 use Throwable;
@@ -76,7 +74,9 @@ class Db extends Singleton
         $cache_key = hash('md5', $query . serialize($params));
         $result = apcu_fetch($cache_key);
         if ($result === false) {
-            $result = self::execute($query, $params)->fetchAll();
+            $statement = self::execute($query, $params);
+            $result = $statement->fetchAll();
+            $statement->closeCursor();
             if ($result !== false) {
                 apcu_add($cache_key, $result, $cachettl);
             }
@@ -84,9 +84,12 @@ class Db extends Singleton
         return $result;
     }
 
-    static public function fetch(string $query, array $params = [])
+    static public function fetch(string $query, array $params = [], bool $closecursor = true)
     {
-        return self::execute($query, $params)->fetch();
+        $statement =  self::execute($query, $params);
+        $return = $statement->fetch();
+        if ($closecursor) $statement->closeCursor();
+        return $return;
     }
 
     /** @noinspection PhpUnhandledExceptionInspection */
