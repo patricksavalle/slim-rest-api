@@ -50,6 +50,7 @@ class Db extends Singleton
             $query_logging = Ini::get("database_query_logging");
         }
         try {
+            if ($query_logging) error_log("--> " . $query);
             $timems = microtime(true);
             $md5 = md5($query);
             // check if we already prepared this query
@@ -57,7 +58,7 @@ class Db extends Singleton
                 self::$statements[$md5] = static::prepare($query);
             }
             self::$statements[$md5]->execute($params);
-            if ($query_logging) error_log("[" . round((microtime(true) - $timems) * 1000) . "ms]: " . $query);
+            if ($query_logging) error_log("<-- (" . round((microtime(true) - $timems) * 1000) . "ms) " . $query);
             return self::$statements[$md5];
 
         } catch (Throwable $e) {
