@@ -26,7 +26,6 @@ namespace SlimRestApi\Infra {
      *
      * This will cause the actions to be run. The result of the last action will be returned.
      */
-
     abstract class TwoFactorAction extends stdClass
     {
         // MUST BE PUBLIC, otherwise it will not be enumerated into the Locker
@@ -56,7 +55,7 @@ namespace SlimRestApi\Infra {
         {
             // Execute all requested actions in order, remember last result
             $result = null;
-            foreach (Locker::unstash($args->utoken) as list($phpfile, $callable, $arguments)) {
+            foreach (Locker::unstash($args->utoken) as [$phpfile, $callable, $arguments]) {
                 require_once $phpfile;
                 $result = call_user_func_array($callable, $arguments);
             }
@@ -73,13 +72,21 @@ namespace SlimRestApi\Infra {
          * Send the authorisation request to the user
          * @throws Exception
          */
-        public function sendToken(string $email, string $subject, $template, stdClass $args): TwoFactorAction
+        public function sendToken(string $email, string $subject, ?string $template, stdClass $args): TwoFactorAction
         {
-            // get the email template
-            $body = file_get_contents($template ?? __DIR__ . DIRECTORY_SEPARATOR . "twofactoraction.html");
+            if (empty($template)) {
+                // use our default
+                $body = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . "twofactoraction.html");
+            } elseif (filter_var($template, FILTER_VALIDATE_URL) !== false) {
+                // suer supplied an URL, retrieve content
+                $body = file_get_contents($template);
+            } else {
+                // probably an inline template
+                $body = $template;
+            }
 
             // add the token to the template variables
-            $args->logintoken =  $this->utoken;
+            $args->logintoken = $this->utoken;
 
             // Very simple template rendering, just iterate all object members and replace {{name}} with value
             foreach ($args as $key => $value) {
