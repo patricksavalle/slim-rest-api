@@ -78,7 +78,10 @@ namespace SlimRestApi\Infra {
                 // use our default
                 $body = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . "twofactoraction.html");
             } elseif (filter_var($template, FILTER_VALIDATE_URL) !== false) {
-                // suer supplied an URL, retrieve content
+                // user supplied an URL, retrieve content
+                $body = file_get_contents($template);
+            } elseif (is_file($template)) {
+                // user supplied a local file, retrieve content
                 $body = file_get_contents($template);
             } else {
                 // probably an inline template
