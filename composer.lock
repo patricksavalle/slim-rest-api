@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ee0eaf4c3cce44fe9ec2d1ca6278429",
+    "content-hash": "1a100c0e2d9ddf66f9fcd22c76297399",
     "packages": [
         {
             "name": "nikic/fast-route",
@@ -28,12 +28,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "FastRoute\\": "src/"
-                },
                 "files": [
                     "src/functions.php"
-                ]
+                ],
+                "psr-4": {
+                    "FastRoute\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -55,57 +55,6 @@
                 "source": "https://github.com/nikic/FastRoute/tree/master"
             },
             "time": "2018-02-13T20:26:39+00:00"
-        },
-        {
-            "name": "palanik/corsslim",
-            "version": "dev-slim3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/palanik/CorsSlim.git",
-                "reference": "e84cb944ca73aace3ea92f6ec0b68de1619eea62"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/palanik/CorsSlim/zipball/e84cb944ca73aace3ea92f6ec0b68de1619eea62",
-                "reference": "e84cb944ca73aace3ea92f6ec0b68de1619eea62",
-                "shasum": ""
-            },
-            "require": {
-                "slim/slim": ">=3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "CorsSlim\\": "."
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "palanik"
-                }
-            ],
-            "description": "Cross-origin resource sharing (CORS) middleware for PHP Slim.",
-            "homepage": "https://github.com/palanik/CorsSlim",
-            "keywords": [
-                "cors",
-                "corsslim",
-                "cross-origin",
-                "preflight",
-                "slim",
-                "slimphp"
-            ],
-            "support": {
-                "issues": "https://github.com/palanik/CorsSlim/issues",
-                "source": "https://github.com/palanik/CorsSlim/tree/slim3"
-            },
-            "time": "2016-01-15T04:37:35+00:00"
         },
         {
             "name": "patricksavalle/slim-request-params",
@@ -448,16 +397,15 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "palanik/corsslim": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.3",
         "ext-pdo": "*",
         "ext-openssl": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-apcu": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"

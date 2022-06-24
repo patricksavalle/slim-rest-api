@@ -6,14 +6,12 @@ namespace SlimRestApi;
 
 require_once 'vendor/autoload.php';
 
-use CorsSlim\CorsSlim;
 use ErrorException;
 use pavlakis\cli\CliRequest;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use SlimRequestParams\RequestResponseArgsObject;
-use SlimRestApi\Infra\Ini;
 use Throwable;
 
 class SlimRestApi extends App
@@ -90,31 +88,5 @@ class SlimRestApi extends App
                     ->withHeader('Allow', implode(', ', $methods));
             };
         };
-
-        // add cors headers to response
-        $get_cors_origin = function (): array {
-            $origin = [];
-            // IE hack
-            if (isset($_SERVER["HTTP_ORIGIN"]) and $this->isAllowedCorsOrigin($_SERVER["HTTP_ORIGIN"])) {
-                $origin[] = $_SERVER["HTTP_ORIGIN"];
-            }
-            return $origin;
-        };
-        $this->add(new CorsSlim([
-            "origin" => $get_cors_origin(),
-            "exposeHeaders" => Ini::get('cors_expose_headers'),
-            "maxAge" => Ini::get('cors_max_age'),
-            // 1 or "TRUE" from the ini file are both not working as values for allowCredentials
-            "allowCredentials" => (bool)Ini::get('cors_allow_credentials'),
-            "allowMethods" => Ini::get('cors_allow_methods'),
-            "allowHeaders" => Ini::get('cors_allow_headers'),
-        ]));
-
-    }
-
-    // override in derived class to do extensive origin checks
-    protected function isAllowedCorsOrigin(string $origin): bool
-    {
-        return in_array(strtolower($origin), Ini::get('cors_origin'));
     }
 }

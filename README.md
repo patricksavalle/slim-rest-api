@@ -8,7 +8,6 @@ Turns the default SLIM App-class into a production-grade JSON REST-API base-clas
 - translates unhandled exceptions into 'normal' JSON-responses with the correct HTTP-STATUS
 - translates unknown routes/URL's and methods into 'normal' 403 and 404 JSON-responses
 - CLI support to accept and protect for instance cronjob calls from the server
-- CORS / cross-origin resource sharing support
 - Middleware for database optimisation and memcache support
 - Query caching (using APCu)
 
