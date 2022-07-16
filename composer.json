@@ -30,7 +30,8 @@
     "ext-pdo": "*",
     "ext-openssl": "*",
     "ext-json": "*",
-    "ext-apcu": "*"
+    "ext-apcu": "*",
+    "ext-ctype": "*"
   },
   "autoload": {
     "psr-4": {

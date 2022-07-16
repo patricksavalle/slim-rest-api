@@ -62,7 +62,9 @@ class Db extends Singleton
             return self::$statements[$md5];
 
         } catch (Throwable $e) {
+            error_log($e->getMessage());
             error_log($query);
+            error_log(print_r($params, true));
             throw $e;
         }
     }
@@ -87,7 +89,7 @@ class Db extends Singleton
 
     static public function fetch(string $query, array $params = [], bool $closecursor = true)
     {
-        $statement =  self::execute($query, $params);
+        $statement = self::execute($query, $params);
         $return = $statement->fetch();
         if ($closecursor) $statement->closeCursor();
         return $return;
