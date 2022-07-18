@@ -28,9 +28,7 @@ namespace SlimRestApi\Infra {
             if ($result === false) {
                 // if not, call the function and cache result
                 $result = call_user_func_array($function, $param_arr);
-                if (apcu_add($cache_key, $result, $expiration) === false) {
-                    error_log("APCu error on method: $method_name");
-                }
+                apcu_add($cache_key, $result, $expiration);
             }
             return $result;
         }

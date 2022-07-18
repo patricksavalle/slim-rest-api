@@ -20,7 +20,7 @@ namespace SlimRestApi\Infra {
                 throw new Exception("Uncallable function: " . $method_name, 500);
             }
             $cache_key = hash('md5', $method_name . serialize($param_arr));
-            if (apcu_add($cache_key, $cache_key, $max_lock_time) === false) {
+            if (apcu_add($cache_key, $cache_key, $max_lock_time) !== true) {
                 throw new Exception("Locked, wait for completion", 409);
             }
             try {
