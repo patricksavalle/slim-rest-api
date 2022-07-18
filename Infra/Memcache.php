@@ -15,6 +15,7 @@ namespace SlimRestApi\Infra {
 
         final static public function call_user_func_array(callable $function, array $param_arr, int $expiration = 0)
         {
+            $method_name = null;
             if (!is_callable($function, false, $method_name)) {
                 throw new Exception("Uncallable function: " . $method_name, 500);
             }
