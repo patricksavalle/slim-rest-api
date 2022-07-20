@@ -28,18 +28,20 @@ namespace SlimRestApi\Infra {
      */
     abstract class TwoFactorAction extends stdClass
     {
-        // MUST BE PUBLIC, otherwise it will not be enumerated into the Locker
-        public $actions = [];
-        public $utoken = null;
+        private $actions = [];
+        private $utoken = null;
 
         public function addAction(string $phpfile, callable $callable, array $arguments): TwoFactorAction
         {
+            assert(file_exists($phpfile));
+            assert(is_callable($callable));
             $this->actions[] = [$phpfile, $callable, $arguments];
             return $this;
         }
 
         public function createToken(int $ttl = 60 * 60 * 24): TwoFactorAction
         {
+            assert(sizeof($this->actions) > 0);
             // Create a token for the action, to execute to token use the __invoke methode
             $this->utoken = Locker::stash($this->actions, $ttl);
             unset($this->actions);

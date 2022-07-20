@@ -21,7 +21,7 @@ abstract class Singleton extends stdClass
         }
     }
 
-    static protected function setProperty(string $name, $value)
+    static protected function setProperty(string $name, $value): void
     {
         /** @noinspection PhpVariableVariableInspection */
         self::instantiate()->$name = $value;
