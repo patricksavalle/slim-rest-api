@@ -12,7 +12,7 @@
     "exception handling",
     "CORS"
   ],
-  "version" : "v1.6",
+  "version" : "v1.7",
   "type": "library",
   "license": "MIT",
   "homepage": "https://github.com/patricksavalle/slim-rest-api",
