@@ -12,13 +12,13 @@ namespace SlimRestApi\Middleware {
     {
         public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
         {
+            assert($request->getMethod() === 'GET');
             $return = $next($request, $response);
             $IfNoneMatch = $request->getHeader("If-None-Match")[0] ?? null;
             $Etag = sha1($return->getBody()->getContents());
-            if ($IfNoneMatch === $Etag) {
-                return (new Response())->withStatus(304);
-            }
-            return $return->withHeader("Etag", $Etag);
+            return ($IfNoneMatch === $Etag)
+                ? (new Response)->withStatus(304)
+                : $return->withHeader("Etag", $Etag);
         }
     }
 }
