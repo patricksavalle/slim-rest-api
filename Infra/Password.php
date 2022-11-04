@@ -20,7 +20,7 @@ class Password
      */
     public static function hash(string $password, int $work_factor = 12): string
     {
-        // on a i7/3Ghz, hasing at factor 12 takes 0.25s per password
+        // on an i7/3Ghz, hasing at factor 12 takes 0.25s per password
         // times increase progressively, 20 will take a minute or so per hash
         return password_hash($password, PASSWORD_BCRYPT, ['cost' => $work_factor]);
     }
@@ -47,11 +47,11 @@ class Password
 
     public static function randomMD5(): string
     {
-        return bin2hex(openssl_random_pseudo_bytes(16, $cstrong));
+        return bin2hex(openssl_random_pseudo_bytes(16));
     }
 
     public static function randomSHA1(): string
     {
-        return bin2hex(openssl_random_pseudo_bytes(20, $cstrong));
+        return bin2hex(openssl_random_pseudo_bytes(20));
     }
 }

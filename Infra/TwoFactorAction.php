@@ -28,8 +28,8 @@ namespace SlimRestApi\Infra {
      */
     abstract class TwoFactorAction extends stdClass
     {
-        private $actions = [];
-        private $utoken = null;
+        private array $actions = [];
+        private ?string $utoken = null;
 
         public function addAction(string $phpfile, callable $callable, array $arguments): TwoFactorAction
         {

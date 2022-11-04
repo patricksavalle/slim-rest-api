@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace SlimRestApi\Middleware {
 
-    use DateInterval;
     use DateTime;
     use DateTimeInterface;
     use Psr\Http\Message\ResponseInterface;
@@ -13,7 +12,7 @@ namespace SlimRestApi\Middleware {
 
     class CacheablePrivate
     {
-        protected $expiration;
+        protected int $expiration;
 
         public function __construct(int $expiration = 60)
         {

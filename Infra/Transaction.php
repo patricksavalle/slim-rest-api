@@ -33,7 +33,7 @@ use stdClass;
  */
 class Transaction extends stdClass
 {
-    protected $parts = [];
+    protected array $parts = [];
 
     public function action(callable $function): Transaction
     {

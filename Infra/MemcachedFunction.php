@@ -8,6 +8,7 @@ namespace SlimRestApi\Infra {
     {
         public function __invoke(callable $function, array $param_arr = [], int $expiration = 60)
         {
+            /** @noinspection PhpUnhandledExceptionInspection */
             return Memcache::call_user_func_array($function, $param_arr, $expiration);
         }
     }

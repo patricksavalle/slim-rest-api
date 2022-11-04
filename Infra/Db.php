@@ -21,9 +21,9 @@ use Throwable;
  */
 class Db extends Singleton
 {
-    static protected $instance = null;
-    static protected $statements = [];
-    static protected $logqueries = false;
+    static protected Db $instance;
+    static protected array $statements = [];
+    static protected bool $logqueries = false;
 
     /** @noinspection PhpUnhandledExceptionInspection */
     static public function transaction(callable $callable)

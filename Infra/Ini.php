@@ -9,7 +9,7 @@ use InvalidArgumentException;
 
 class Ini
 {
-    static protected $iniValues = null;
+    static protected array $iniValues = [];
 
     static public function get(string $name)
     {

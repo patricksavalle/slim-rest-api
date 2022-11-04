@@ -12,7 +12,7 @@ namespace SlimRestApi\Middleware {
 
     class Cacheable
     {
-        protected $expiration;
+        protected int $expiration;
 
         public function __construct(int $expiration = 60)
         {

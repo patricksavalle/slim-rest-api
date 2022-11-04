@@ -11,8 +11,6 @@ namespace SlimRestApi\Infra {
 
     final class Memcache
     {
-        static protected $instance = null;
-
         final static public function call_user_func_array(callable $function, array $param_arr, int $expiration = 0)
         {
             $method_name = null;
