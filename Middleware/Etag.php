@@ -15,10 +15,10 @@ namespace SlimRestApi\Middleware {
             assert($request->getMethod() === 'GET');
             $return = $next($request, $response);
             $IfNoneMatch = $request->getHeader("If-None-Match")[0] ?? null;
-            $Etag = sha1($return->getBody()->getContents());
-            return ($IfNoneMatch === $Etag)
+            $ETag = md5($return->getBody()->getContents());
+            return ($IfNoneMatch === $ETag)
                 ? (new Response)->withStatus(304)
-                : $return->withHeader("Etag", $Etag);
+                : $return->withHeader("ETag", $ETag);
         }
     }
 }
