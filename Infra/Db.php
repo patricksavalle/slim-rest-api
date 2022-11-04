@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpUnhandledExceptionInspection */
+<?php
+/** @noinspection PhpUnhandledExceptionInspection */
 /** @noinspection PhpUndefinedMethodInspection */
 
 declare(strict_types=1);
@@ -21,9 +22,8 @@ use Throwable;
  */
 class Db extends Singleton
 {
-    static protected Db $instance;
+    static protected $instance;
     static protected array $statements = [];
-    static protected bool $logqueries = false;
 
     /** @noinspection PhpUnhandledExceptionInspection */
     static public function transaction(callable $callable)
@@ -45,10 +45,7 @@ class Db extends Singleton
     /** @noinspection PhpUnhandledExceptionInspection */
     static public function execute(string $query, array $params = []): PDOStatement
     {
-        static $query_logging = -1;
-        if ($query_logging === -1) {
-            $query_logging = Ini::get("database_query_logging");
-        }
+        $query_logging = Ini::get("database_query_logging");
         try {
             if ($query_logging) error_log("--> " . $query);
             $timems = microtime(true);
@@ -149,7 +146,6 @@ class Db extends Singleton
 
     static protected function instance(): PDO
     {
-        self::$logqueries = Ini::get('database_query_logging');
         $dbhost = Ini::get('database_host');
         $dbname = Ini::get('database_name');
         $dbcharset = Ini::get('database_charset');

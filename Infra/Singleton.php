@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpUnused */
+<?php /** @noinspection PhpVoidFunctionResultUsedInspection */
+/** @noinspection PhpUnused */
 /** @noinspection PhpUnhandledExceptionInspection */
 
 declare(strict_types = 1);
@@ -11,6 +12,7 @@ use stdClass;
 
 abstract class Singleton extends stdClass
 {
+    static protected $instance;
     static final public function __callStatic(string $method, array $arguments)
     {
         try {

@@ -13,7 +13,7 @@ class Ini
 
     static public function get(string $name)
     {
-        if (null === static::$iniValues) {
+        if (empty(static::$iniValues)) {
             static::$iniValues = parse_ini_file('slim-rest-api.ini', false, INI_SCANNER_TYPED);
         }
         try {
