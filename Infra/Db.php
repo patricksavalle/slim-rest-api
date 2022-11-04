@@ -22,7 +22,6 @@ use Throwable;
  */
 class Db extends Singleton
 {
-    static protected $instance;
     static protected array $statements = [];
 
     /** @noinspection PhpUnhandledExceptionInspection */
