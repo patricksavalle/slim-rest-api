@@ -2,7 +2,7 @@
 /** @noinspection PhpUnused */
 /** @noinspection PhpUnhandledExceptionInspection */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SlimRestApi\Infra;
 
@@ -12,7 +12,6 @@ use stdClass;
 
 abstract class Singleton extends stdClass
 {
-    static protected $instance;
     static final public function __callStatic(string $method, array $arguments)
     {
         try {
@@ -39,16 +38,16 @@ abstract class Singleton extends stdClass
 
     static private function instantiate()
     {
-        if (static::$instance == null) {
-            static::$instance = static::instance();
-            assert(is_object(static::$instance));
+        static $instance = null;
+        if ($instance === null) {
+            $instance = static::instance();
+            assert(is_object($instance));
         }
-        return static::$instance;
+        return $instance;
     }
 
     private function __clone()
     {
     }
-
 }
 
