@@ -26,7 +26,7 @@ class Db extends Singleton
     static protected array $statements = [];
 
     /** @noinspection PhpUnhandledExceptionInspection */
-    static public function transaction(callable $callable)
+    static public function transaction(callable $callable): mixed
     {
         if (static::inTransaction()) {
             return call_user_func($callable);
@@ -66,25 +66,22 @@ class Db extends Singleton
         }
     }
 
-    static public function fetchAll(string $query, array $params = [], int $cachettl = 0)
+    static public function fetchAll(string $query, array $params = [], int $cachettl = 0): mixed
     {
-        if ($cachettl === 0) {
-            return self::execute($query, $params)->fetchAll();
-        }
         $cache_key = hash('md5', $query . serialize($params));
-        $result = apcu_fetch($cache_key);
+        $result = $cachettl === 0 ? false : apcu_fetch($cache_key);
         if ($result === false) {
             $statement = self::execute($query, $params);
             $result = $statement->fetchAll();
             $statement->closeCursor();
-            if ($result !== false) {
+            if ($result !== false and $cachettl > 0) {
                 apcu_add($cache_key, $result, $cachettl);
             }
         }
         return $result;
     }
 
-    static public function fetch(string $query, array $params = [], bool $closecursor = true)
+    static public function fetch(string $query, array $params = [], bool $closecursor = true): mixed
     {
         $statement = self::execute($query, $params);
         $return = $statement->fetch();

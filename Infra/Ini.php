@@ -9,15 +9,15 @@ use InvalidArgumentException;
 
 class Ini
 {
-    static protected array $iniValues = [];
-
-    static public function get(string $name)
+    static public function get(string $name): string
     {
-        if (empty(static::$iniValues)) {
-            static::$iniValues = parse_ini_file('slim-rest-api.ini', false, INI_SCANNER_TYPED);
+        static $iniValues = [];
+
+        if (empty($iniValues)) {
+            $iniValues = parse_ini_file('slim-rest-api.ini', false, INI_SCANNER_TYPED);
         }
         try {
-            return static::$iniValues[$name];
+            return $iniValues[$name];
         } catch (Exception $e) {
             throw new InvalidArgumentException("Key '$name' not found in slim-rest-api.ini" );
         }

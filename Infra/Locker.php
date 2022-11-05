@@ -20,13 +20,13 @@ namespace SlimRestApi\Infra {
                 throw new Exception;
             }
             $hash = Password::randomMD5();
-            if (apcu_add($hash, $json, $ttl)===false) {
+            if (apcu_add($hash, $json, $ttl) === false) {
                 throw new Exception("APCU failure! Low on memory?");
             }
             return $hash;
         }
 
-        static public function unstash(string $hash)/* : mixed */
+        static public function unstash(string $hash): mixed
         {
             $json = apcu_fetch($hash);
             if (empty($json)) {
