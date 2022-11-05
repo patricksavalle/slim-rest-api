@@ -38,12 +38,12 @@ abstract class Singleton extends stdClass
 
     static private function instantiate()
     {
-        static $instance = null;
-        if ($instance === null) {
-            $instance = static::instance();
-            assert(is_object($instance));
+        assert(property_exists(static::class, 'instance'));
+        if (static::$instance === null) {
+            static::$instance = static::instance();
+            assert(is_object(static::$instance));
         }
-        return $instance;
+        return static::$instance;
     }
 
     private function __clone()
