@@ -9,7 +9,7 @@ use InvalidArgumentException;
 
 class Ini
 {
-    static public function get(string $name): string
+    static public function get(string $name): mixed
     {
         static $iniValues = [];
 
