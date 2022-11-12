@@ -31,7 +31,8 @@
     "ext-openssl": "*",
     "ext-json": "*",
     "ext-apcu": "*",
-    "ext-ctype": "*"
+    "ext-ctype": "*",
+    "firehed/simplelogger": "^2.5"
   },
   "autoload": {
     "psr-4": {
