@@ -1,18 +1,15 @@
 {
   "name": "patricksavalle/slim-rest-api",
-  "description": "Production-grade REST-API App-class for PHP SLIM",
+  "description": "Production-grade REST-API App-class for PHP SLIM, in production on https://zaplog.pro (https://api.zaplog.pro/v1)",
   "keywords": [
     "php",
     "api",
     "rest",
     "slim",
     "restful",
-    "framework",
-    "error handling",
-    "exception handling",
-    "CORS"
+    "framework"
   ],
-  "version" : "v1.8",
+  "version" : "v1.9",
   "type": "library",
   "license": "MIT",
   "homepage": "https://github.com/patricksavalle/slim-rest-api",
@@ -32,7 +29,8 @@
     "ext-json": "*",
     "ext-apcu": "*",
     "ext-ctype": "*",
-    "firehed/simplelogger": "^2.5"
+    "firehed/simplelogger": "^2.5",
+    "adhocore/jwt": "^1.1"
   },
   "autoload": {
     "psr-4": {

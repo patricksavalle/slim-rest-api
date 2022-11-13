@@ -4,8 +4,65 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "53b777b35cb1ff396fbff875dd8de2b6",
+    "content-hash": "2b56fb9d7d041be48e3d4c4ce5aec05e",
     "packages": [
+        {
+            "name": "adhocore/jwt",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adhocore/php-jwt.git",
+                "reference": "6c434af7170090bb7a8880d2bc220a2254ba7899"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/adhocore/php-jwt/zipball/6c434af7170090bb7a8880d2bc220a2254ba7899",
+                "reference": "6c434af7170090bb7a8880d2bc220a2254ba7899",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0 || ^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5 || ^7.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ahc\\Jwt\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jitendra Adhikari",
+                    "email": "jiten.adhikary@gmail.com"
+                }
+            ],
+            "description": "Ultra lightweight JSON web token (JWT) library for PHP5.5+.",
+            "keywords": [
+                "auth",
+                "json-web-token",
+                "jwt",
+                "jwt-auth",
+                "jwt-php",
+                "token"
+            ],
+            "support": {
+                "issues": "https://github.com/adhocore/php-jwt/issues",
+                "source": "https://github.com/adhocore/php-jwt/tree/1.1.2"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/ji10",
+                    "type": "custom"
+                }
+            ],
+            "time": "2021-02-20T09:56:44+00:00"
+        },
         {
             "name": "firehed/simplelogger",
             "version": "2.5.0",
@@ -121,16 +178,16 @@
         },
         {
             "name": "patricksavalle/slim-request-params",
-            "version": "v1.1",
+            "version": "v1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/patricksavalle/slim-request-params.git",
-                "reference": "26958f62cf656348d9c3730e235007ddc5e601b6"
+                "reference": "c4eea8f43c6b1ba77a756f37b2bd2c0fe11ed0f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/patricksavalle/slim-request-params/zipball/26958f62cf656348d9c3730e235007ddc5e601b6",
-                "reference": "26958f62cf656348d9c3730e235007ddc5e601b6",
+                "url": "https://api.github.com/repos/patricksavalle/slim-request-params/zipball/c4eea8f43c6b1ba77a756f37b2bd2c0fe11ed0f3",
+                "reference": "c4eea8f43c6b1ba77a756f37b2bd2c0fe11ed0f3",
                 "shasum": ""
             },
             "require": {
@@ -168,9 +225,9 @@
             ],
             "support": {
                 "issues": "https://github.com/patricksavalle/slim-request-params/issues",
-                "source": "https://github.com/patricksavalle/slim-request-params/tree/V1.1"
+                "source": "https://github.com/patricksavalle/slim-request-params/tree/V1.2"
             },
-            "time": "2020-02-01T09:28:01+00:00"
+            "time": "2022-10-19T14:05:34+00:00"
         },
         {
             "name": "pavlakis/slim-cli",
